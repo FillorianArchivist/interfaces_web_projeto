@@ -1,1 +1,370 @@
+<!DOCTYPE html>
+<html lang="pt-PT" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arquivo Paroquial - Manuscritos de Favaios</title>
+    
+    <!-- Tailwind CSS (Modular Styling Framework) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts imported from your Figma design -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant:wght@700&family=Esteban&family=Gloock&family=Playfair+Display:wght@500;600&display=swap" rel="stylesheet">
+    
+    <!-- Phosphor Icons for the Footer -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
 
+    <!-- Custom Tailwind Configuration to match your exact Figma Colors and Fonts -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        background: '#F8F6F2',
+                        gold: '#D1A537',
+                        goldDark: '#BF984B',
+                        lightText: '#EBE2DB',
+                        darkText: '#2D2724',
+                        cardBorder: '#BFB7B1',
+                        brandRed: '#661515',
+                        brandRedDark: '#4a0f0f'
+                    },
+                    fontFamily: {
+                        playfair: ['"Playfair Display"', 'serif'],
+                        gloock: ['"Gloock"', 'serif'],
+                        esteban: ['"Esteban"', 'serif'],
+                        cormorant: ['"Cormorant"', 'serif'],
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-background font-esteban text-darkText antialiased">
+
+    <!-- ==========================================
+         HERO SECTION (Modular Component)
+         ========================================== -->
+    <header class="relative min-h-screen flex flex-col items-center justify-center text-center px-6 py-20 overflow-hidden">
+        <!-- Background Image with Gradient Overlay -->
+        <div class="absolute inset-0 z-0">
+            <!-- Placeholder for Favaios landscape -->
+            <img src="Favaios.png" alt="Paisagem de Favaios" class="w-full h-full object-cover" />
+
+            <!-- Top dark fade for text readability -->
+            <div class="absolute inset-0 bg-gradient-to-b from-black/90 via-black/50 to-black/10"></div>
+            
+            <!-- Dedicated bottom fade to blend seamlessly into the next section -->
+            <div class="absolute inset-x-0 -bottom-2 h-64 bg-gradient-to-t from-background via-background/90 to-transparent"></div>
+        </div>
+
+        <!-- Hero Content -->
+        <div class="relative z-10 flex flex-col items-center max-w-5xl mx-auto mt-16">
+            <h2 class="font-playfair font-semibold text-gold text-xl md:text-3xl tracking-[0.06em] mb-4">
+                ARQUIVO PAROQUIAL 1926-1940
+            </h2>
+            <h1 class="font-gloock text-lightText text-5xl md:text-7xl lg:text-[80px] leading-tight mb-8">
+                Manuscritos<br>de Favaios
+            </h1>
+            <p class="font-esteban text-lightText/80 text-xl md:text-3xl max-w-4xl leading-relaxed mb-16">
+                Honramos a memória dos que partiram - registos de óbitos da paróquia de Favaios, Alto Douro, entre 1926 e 1940.
+            </p>
+
+            <!-- Navigation Grid (Responsive Boxes) -->
+            <nav class="grid grid-cols-1 md:grid-cols-2 gap-6 w-full max-w-4xl">
+                <a href="#explorar" class="group relative flex items-center justify-center h-[120px] border-2 border-white/80 hover:border-gold hover:bg-white/5 transition-all duration-300">
+                    <span class="font-playfair font-medium text-lightText text-2xl md:text-3xl text-center underline decoration-1 underline-offset-8 group-hover:text-gold transition-colors">EXPLORAR<br>DADOS</span>
+                </a>
+                <a href="#sobre" class="group relative flex items-center justify-center h-[120px] border-2 border-white/80 hover:border-gold hover:bg-white/5 transition-all duration-300">
+                    <span class="font-playfair font-medium text-lightText text-2xl md:text-3xl text-center underline decoration-1 underline-offset-8 group-hover:text-gold transition-colors">LINHA<br>TEMPORAL</span>
+                </a>
+                <a href="#sobre" class="group relative flex items-center justify-center h-[120px] border-2 border-white/80 hover:border-gold hover:bg-white/5 transition-all duration-300">
+                    <span class="font-playfair font-medium text-lightText text-2xl md:text-3xl text-center underline decoration-1 underline-offset-8 group-hover:text-gold transition-colors">CONTEXTO<br>HISTÓRICO</span>
+                </a>
+                <a href="#sobre" class="group relative flex items-center justify-center h-[120px] border-2 border-white/80 hover:border-gold hover:bg-white/5 transition-all duration-300">
+                    <span class="font-playfair font-medium text-lightText text-2xl md:text-3xl text-center underline decoration-1 underline-offset-8 group-hover:text-gold transition-colors">SOBRE O<br>PROJETO</span>
+                </a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- ==========================================
+         STATS SECTION (Modular Component)
+         ========================================== -->
+    <!-- The trick: relative z-20 brings it to the front, -mt-4 pulls it up over the hero section, pt-28 restores inner spacing, and bg-background makes it opaque -->
+    <section class="relative z-20 -mt-4 pt-28 pb-24 px-6 max-w-7xl mx-auto bg-background">
+        <div class="text-center mb-16">
+            <h2 class="font-playfair font-medium text-goldDark text-2xl md:text-4xl tracking-[0.15em] mb-4">OS NÚMEROS</h2>
+            <h3 class="font-gloock text-darkText text-4xl md:text-[50px] leading-tight">Mais de uma década<br>de informação</h3>
+        </div>
+
+        <!-- CSS Grid for the 4 Stat Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <!-- Card 1 -->
+            <div class="bg-background border-2 border-cardBorder rounded-md p-10 flex flex-col items-center justify-center text-center h-[280px] shadow-sm hover:shadow-md transition-shadow">
+                <span class="font-cormorant font-bold text-brandRed text-[80px] md:text-[96px] leading-none mb-4" id="stat-anos">14</span>
+                <span class="font-cormorant font-bold text-[#49454F] text-2xl md:text-3xl leading-snug">Anos<br>registados</span>
+            </div>
+            <!-- Card 2 -->
+            <div class="bg-background border-2 border-cardBorder rounded-md p-10 flex flex-col items-center justify-center text-center h-[280px] shadow-sm hover:shadow-md transition-shadow">
+                <span class="font-cormorant font-bold text-brandRed text-[80px] md:text-[96px] leading-none mb-4" id="stat-assentos">566</span>
+                <span class="font-cormorant font-bold text-[#49454F] text-2xl md:text-3xl leading-snug">Assentos<br>Totais</span>
+            </div>
+            <!-- Card 3 -->
+            <div class="bg-background border-2 border-cardBorder rounded-md p-10 flex flex-col items-center justify-center text-center h-[280px] shadow-sm hover:shadow-md transition-shadow">
+                <span class="font-cormorant font-bold text-brandRed text-[80px] md:text-[96px] leading-none mb-4">200+</span>
+                <span class="font-cormorant font-bold text-[#49454F] text-2xl md:text-3xl leading-snug">Apelidos e<br>Famílias</span>
+            </div>
+            <!-- Card 4 -->
+            <div class="bg-background border-2 border-cardBorder rounded-md p-10 flex flex-col items-center justify-center text-center h-[280px] shadow-sm hover:shadow-md transition-shadow">
+                <span class="font-cormorant font-bold text-brandRed text-[80px] md:text-[96px] leading-none mb-4">4</span>
+                <span class="font-cormorant font-bold text-[#49454F] text-2xl md:text-3xl leading-snug">Localidades<br>diferentes</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==========================================
+         DATABASE PROTOTYPE SECTION (Local Storage)
+         ========================================== -->
+    <section id="explorar" class="py-24 px-6 bg-white border-t border-cardBorder">
+        <div class="max-w-7xl mx-auto">
+            <div class="flex flex-col md:flex-row justify-between items-end mb-12 border-b-2 border-goldDark pb-6">
+                <div>
+                    <h2 class="font-playfair font-medium text-goldDark text-3xl tracking-widest mb-2">EXPLORAR DADOS</h2>
+                    <p class="font-esteban text-darkText/70 text-lg">Protótipo de base de dados utilizando Local Storage.</p>
+                </div>
+                <button onclick="toggleForm()" class="mt-4 md:mt-0 bg-brandRed text-white px-6 py-3 font-playfair tracking-wider hover:bg-brandRedDark transition-colors rounded shadow-md">
+                    + ADICIONAR REGISTO
+                </button>
+            </div>
+
+            <!-- Add Document Form (Hidden by default) -->
+            <div id="add-form-container" class="hidden bg-background border border-cardBorder p-8 rounded-md mb-12 shadow-inner">
+                <h3 class="font-gloock text-2xl mb-6">Novo Assento de Óbito</h3>
+                <form id="record-form" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="flex flex-col">
+                        <label class="font-playfair font-bold text-sm mb-2 text-darkText">NOME DO DEFUNTO</label>
+                        <input type="text" id="nome" required class="p-3 border border-cardBorder rounded focus:outline-none focus:border-gold bg-white">
+                    </div>
+                    <div class="flex flex-col">
+                        <label class="font-playfair font-bold text-sm mb-2 text-darkText">DATA DO ÓBITO</label>
+                        <input type="date" id="data" required class="p-3 border border-cardBorder rounded focus:outline-none focus:border-gold bg-white">
+                    </div>
+                    <div class="flex flex-col">
+                        <label class="font-playfair font-bold text-sm mb-2 text-darkText">LOCALIDADE</label>
+                        <select id="localidade" class="p-3 border border-cardBorder rounded focus:outline-none focus:border-gold bg-white">
+                            <option value="Favaios">Favaios</option>
+                            <option value="Sanfins do Douro">Sanfins do Douro</option>
+                            <option value="Alijó">Alijó</option>
+                            <option value="Vilarinho de Cotas">Vilarinho de Cotas</option>
+                        </select>
+                    </div>
+                    <div class="flex flex-col">
+                        <label class="font-playfair font-bold text-sm mb-2 text-darkText">IDADE (ANOS)</label>
+                        <input type="number" id="idade" required class="p-3 border border-cardBorder rounded focus:outline-none focus:border-gold bg-white">
+                    </div>
+                    <div class="flex flex-col md:col-span-2">
+                        <label class="font-playfair font-bold text-sm mb-2 text-darkText">NOTAS DO PÁROCO</label>
+                        <textarea id="notas" rows="3" class="p-3 border border-cardBorder rounded focus:outline-none focus:border-gold bg-white"></textarea>
+                    </div>
+                    <div class="md:col-span-2 flex justify-end gap-4 mt-2">
+                        <button type="button" onclick="toggleForm()" class="px-6 py-2 border border-brandRed text-brandRed hover:bg-brandRed hover:text-white transition-colors rounded">Cancelar</button>
+                        <button type="submit" class="px-6 py-2 bg-goldDark text-white hover:bg-gold transition-colors rounded shadow">Guardar no Local Storage</button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Data Table -->
+            <div class="overflow-x-auto shadow-md rounded-lg">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="bg-brandRed text-white font-playfair tracking-wider">
+                            <th class="p-4 border-b border-brandRedDark">NOME</th>
+                            <th class="p-4 border-b border-brandRedDark">DATA</th>
+                            <th class="p-4 border-b border-brandRedDark">LOCALIDADE</th>
+                            <th class="p-4 border-b border-brandRedDark">IDADE</th>
+                            <th class="p-4 border-b border-brandRedDark">AÇÕES</th>
+                        </tr>
+                    </thead>
+                    <tbody id="table-body" class="bg-white font-esteban text-darkText">
+                        <!-- Javascript will inject rows here -->
+                    </tbody>
+                </table>
+            </div>
+            <!-- Empty state message -->
+            <div id="empty-state" class="hidden text-center py-12 text-darkText/60">
+                <i class="ph ph-archive text-6xl mb-4 opacity-50"></i>
+                <p class="text-xl">O arquivo local está vazio. Adicione um registo para começar.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==========================================
+         FOOTER (Modular Component)
+         ========================================== -->
+    <footer id="sobre" class="bg-brandRed text-white py-16 px-6 relative">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-start md:items-center gap-10">
+            <!-- Brand / Location -->
+            <div class="flex flex-col gap-6 max-w-lg">
+                <div class="flex items-start gap-4">
+                    <i class="ph ph-map-pin text-4xl text-gold mt-1"></i>
+                    <p class="font-esteban text-xl md:text-2xl tracking-widest leading-relaxed">
+                        Universidade do Minho,<br>Campus de Gualtar,<br>4710-057 Braga
+                    </p>
+                </div>
+            </div>
+
+            <!-- Contact -->
+            <div class="flex flex-col gap-6 max-w-lg">
+                <div class="flex items-start gap-4">
+                    <i class="ph ph-info text-4xl text-gold mt-1"></i>
+                    <p class="font-esteban text-xl md:text-2xl tracking-widest leading-relaxed">
+                        Telefone: +351 253 604 173<br>
+                        E-mail: pedagogico@elach.uminho.pt
+                    </p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ==========================================
+         JAVASCRIPT LOGIC (Local Storage Integration)
+         ========================================== -->
+    <script>
+        // Key for storing data in the browser
+        const STORAGE_KEY = 'favaios_archive_records';
+
+        // Mock data to pre-fill the table if it's the user's first time
+        const initialData = [
+            { id: 1, nome: "Maria de Lurdes", data: "1926-03-14", localidade: "Favaios", idade: 72, notas: "Viúva de Manuel." },
+            { id: 2, nome: "António Augusto", data: "1926-08-22", localidade: "Sanfins do Douro", idade: 45, notas: "Faleceu de febre." },
+            { id: 3, nome: "Joaquina da Silva", data: "1927-01-05", localidade: "Favaios", idade: 5, notas: "Criança." }
+        ];
+
+        // 1. Initialize Application
+        function initApp() {
+            let records = JSON.parse(localStorage.getItem(STORAGE_KEY));
+            
+            // If completely empty, load the mock data
+            if (!records) {
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(initialData));
+                records = initialData;
+            }
+            
+            renderTable();
+            updateStats();
+        }
+
+        // 2. Render Table from Local Storage
+        function renderTable() {
+            const records = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+            const tbody = document.getElementById('table-body');
+            const emptyState = document.getElementById('empty-state');
+
+            tbody.innerHTML = ''; // Clear current rows
+
+            if (records.length === 0) {
+                emptyState.classList.remove('hidden');
+                emptyState.classList.add('block');
+            } else {
+                emptyState.classList.remove('block');
+                emptyState.classList.add('hidden');
+
+                // Sort by date (oldest first)
+                records.sort((a, b) => new Date(a.data) - new Date(b.data));
+
+                records.forEach(record => {
+                    const tr = document.createElement('tr');
+                    tr.className = "border-b border-cardBorder/50 hover:bg-background transition-colors";
+                    
+                    // Format Date to DD/MM/YYYY
+                    const dateObj = new Date(record.data);
+                    const formattedDate = dateObj.toLocaleDateString('pt-PT');
+
+                    tr.innerHTML = `
+                        <td class="p-4 font-bold text-brandRed">${record.nome}</td>
+                        <td class="p-4">${formattedDate}</td>
+                        <td class="p-4">${record.localidade}</td>
+                        <td class="p-4">${record.idade}</td>
+                        <td class="p-4">
+                            <button onclick="deleteRecord(${record.id})" class="text-red-500 hover:text-red-700 underline text-sm" title="Apagar registo">
+                                Apagar
+                            </button>
+                        </td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+            }
+        }
+
+        // 3. Add New Record
+        document.getElementById('record-form').addEventListener('submit', function(e) {
+            e.preventDefault(); // Prevent page refresh
+
+            const newRecord = {
+                id: Date.now(), // Use timestamp as unique ID
+                nome: document.getElementById('nome').value,
+                data: document.getElementById('data').value,
+                localidade: document.getElementById('localidade').value,
+                idade: document.getElementById('idade').value,
+                notas: document.getElementById('notas').value
+            };
+
+            // Get existing, add new, save back
+            const records = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+            records.push(newRecord);
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(records));
+
+            // Reset form and UI
+            this.reset();
+            toggleForm();
+            renderTable();
+            updateStats();
+            
+            // Show a subtle feedback (optional)
+            alert("Registo adicionado à memória local!");
+        });
+
+        // 4. Delete Record
+        function deleteRecord(id) {
+            if(confirm("Tem a certeza que deseja apagar este registo?")) {
+                let records = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+                records = records.filter(record => record.id !== id);
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(records));
+                renderTable();
+                updateStats();
+            }
+        }
+
+        // 5. Update the "OS NÚMEROS" Stats Dynamically
+        function updateStats() {
+            const records = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+            
+            // Update Assentos Total
+            document.getElementById('stat-assentos').textContent = records.length > 0 ? records.length : 566;
+
+            // Calculate unique years (if we actually had all the data)
+            if(records.length > 3) {
+                 const years = new Set(records.map(r => new Date(r.data).getFullYear()));
+                 document.getElementById('stat-anos').textContent = years.size;
+            }
+        }
+
+        // Utility: Toggle Form Visibility
+        function toggleForm() {
+            const formContainer = document.getElementById('add-form-container');
+            if (formContainer.classList.contains('hidden')) {
+                formContainer.classList.remove('hidden');
+            } else {
+                formContainer.classList.add('hidden');
+            }
+        }
+
+        // Run setup on load
+        window.onload = initApp;
+
+    </script>
+</body>
+</html>
