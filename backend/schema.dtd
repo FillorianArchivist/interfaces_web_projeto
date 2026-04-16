@@ -1,1 +1,56 @@
+<!ELEMENT div (head, list)>
+<!ATTLIST div type CDATA #REQUIRED>
+<!ATTLIST div n CDATA #REQUIRED>
+              
+<!ELEMENT head (#PCDATA)>
+<!ELEMENT list (entry)+>
+<!ATTLIST list type CDATA #REQUIRED>
 
+<!ELEMENT entry (persName|p|signed)*>
+<!ATTLIST entry n CDATA #REQUIRED>
+
+<!ELEMENT persName (forename+, surname+)>
+<!ATTLIST persName id ID #IMPLIED>
+<!ATTLIST persName type CDATA #IMPLIED>
+<!ATTLIST persName role CDATA #IMPLIED>
+
+<!ELEMENT forename (#PCDATA)>
+<!ELEMENT surname (#PCDATA|lb)*>
+<!ELEMENT lb EMPTY>
+
+<!ELEMENT p (#PCDATA|death|ptr|state|occupation|age|birthPlace|residence|relation|funeral)*>
+<!ELEMENT death (#PCDATA|lb|placeName|sacraments)*>
+<!ATTLIST death when CDATA #REQUIRED>
+
+<!ELEMENT placeName (#PCDATA|lb)*>
+<!ATTLIST placeName type (parish|deaconry|diocese) #IMPLIED>
+<!ATTLIST placeName id ID #IMPLIED>
+
+<!ELEMENT sacraments (#PCDATA|lb)*>
+<!ATTLIST sacraments value (yes|no) #IMPLIED>
+
+<!ELEMENT ptr (#PCDATA|lb)*>
+<!ATTLIST ptr target IDREF #REQUIRED>
+
+<!ELEMENT state (#PCDATA)>
+<!ATTLIST state type CDATA #REQUIRED>
+
+<!ELEMENT occupation (#PCDATA)>
+<!ELEMENT age (#PCDATA|lb)*>
+<!ATTLIST age unit (years|months|days|hours) #REQUIRED>
+<!ATTLIST age value CDATA #REQUIRED>
+
+<!ELEMENT birthPlace (#PCDATA|ptr)*>
+<!ELEMENT residence (#PCDATA|ptr)*>
+<!ELEMENT relation (#PCDATA|persName)*>
+<!ATTLIST relation type CDATA #REQUIRED>
+<!ATTLIST relation legitimate (yes|no) #IMPLIED>
+<!ATTLIST relation active IDREF #IMPLIED>
+<!ATTLIST relation passive IDREF #IMPLIED>
+
+<!ELEMENT funeral (#PCDATA|lb)*>
+<!ATTLIST funeral when CDATA #IMPLIED>
+<!ATTLIST funeral catholic (yes|no) #IMPLIED>
+
+<!ELEMENT signed (#PCDATA|persName)*>
+<!ATTLIST signed rend CDATA #IMPLIED>
