@@ -15,7 +15,7 @@ async function loadData() {
         }
 
         console.log("A transferir a versão mais recente dos assentos...");
-        const resData = await fetch('./data/manuscript.json');
+        const resData = await fetch('../public/template-assento-xml-json.txt');
         const data = await resData.json();
 
         try {
