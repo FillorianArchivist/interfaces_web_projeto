@@ -6,14 +6,16 @@ on:
     branches:
       - main
     paths:
-      # O script agora corre sempre que adicionares/alterares XMLs nesta nova pasta
       - 'backend/xml_raw/**/*.xml'
-      # Ou se alterares as regras do DTD ou o próprio script Python
       - 'backend/schema.dtd'
       - 'backend/pipeline.py'
 
 permissions:
   contents: write
+
+# Variável de ambiente adicionada para resolver o aviso de depreciação do Node.js 20
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
 # 2. AS INSTRUÇÕES
 jobs:
@@ -25,21 +27,29 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # B. Instalar o Python
+      # B. Instalar o Python (Atualizado para a v5 para evitar o aviso do Node)
       - name: Set up Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: '3.10'
 
-      # C. Instalar as bibliotecas (simplificado para instalar diretamente o que precisamos)
+      # C. Instalar as bibliotecas
       - name: Install dependencies
         run: pip install lxml xmltodict
 
-      # D. Correr o nosso motor de dados (caminho atualizado)
+      # D. PASSO EXTRA: Depuração (Mostra que pastas existem no repositório)
+      - name: Debug Folder Structure
+        run: |
+          echo "Conteúdo da pasta principal:"
+          ls -la
+          echo "Conteúdo da pasta backend (se existir):"
+          ls -la backend/ || echo "ERRO: A pasta backend não existe no repositório!"
+
+      # E. Correr o nosso motor de dados
       - name: Run Python build script
         run: python backend/pipeline.py
 
-      # E. Guardar os resultados na NOVA pasta do Frontend
+      # F. Guardar os resultados na NOVA pasta do Frontend
       - name: Commit and push generated files
         run: |
           git config --global user.name 'github-actions[bot]'
