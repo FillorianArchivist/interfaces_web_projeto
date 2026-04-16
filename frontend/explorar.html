@@ -30,7 +30,8 @@
                         textDark: '#383838',
                         textMuted: '#7D736D',
                         brandRed: '#661515',
-                        brandRedDark: '#4a0f0f'
+                        brandRedDark: '#4a0f0f',
+                        gold: '#D1A537'
                     },
                     fontFamily: {
                         playfair: ['"Playfair Display"', 'serif'],
@@ -43,12 +44,12 @@
         }
     </script>
 </head>
-<body class="bg-background font-esteban text-textDark antialiased min-h-screen flex flex-col">
+<body class="bg-background font-esteban text-textDark antialiased min-h-screen flex flex-col relative">
 
     <!-- ==========================================
          HEADER
          ========================================== -->
-    <header class="bg-headerBg border-b-[3px] border-borderLight relative py-10 px-6 flex items-center justify-center">
+    <header class="bg-headerBg border-b-[3px] border-borderLight relative py-10 px-6 flex items-center justify-center z-10">
         <!-- Back Button -->
         <a href="index.html" class="absolute left-6 md:left-12 flex items-center gap-2 text-textDark hover:text-brandRed transition-colors group">
             <i class="ph ph-arrow-left text-3xl group-hover:-translate-x-1 transition-transform"></i>
@@ -64,7 +65,7 @@
     <!-- ==========================================
          MAIN CONTENT AREA
          ========================================== -->
-    <main class="flex-grow max-w-[1400px] w-full mx-auto px-6 py-12 flex flex-col gap-8">
+    <main class="flex-grow max-w-[1400px] w-full mx-auto px-6 py-12 flex flex-col gap-8 relative z-0">
 
         <!-- Search Bar Section -->
         <section class="bg-cardBg border-[3px] border-borderLight rounded-xl shadow-[0_4px_13px_rgba(0,0,0,0.05)] p-4 md:p-6 flex items-center gap-4">
@@ -72,51 +73,9 @@
             <input 
                 type="text" 
                 id="search-input"
-                placeholder="Pesquisar por nome, apelido, data..." 
+                placeholder="Pesquisar por nome, localidade ou ano..." 
                 class="bg-transparent border-none w-full text-2xl md:text-4xl font-esteban text-textMuted placeholder-textMuted/60 focus:outline-none tracking-wide"
             >
-        </section>
-
-        <!-- Filters Section -->
-        <section class="grid grid-cols-1 md:grid-cols-12 gap-4 md:gap-6 bg-cardBg border-[3px] border-borderLight rounded-xl shadow-[0_4px_13px_rgba(0,0,0,0.05)] p-6">
-            
-            <!-- Filters Button -->
-            <button class="md:col-span-2 bg-brandRed border-2 border-brandRed rounded-lg flex items-center justify-center gap-2 py-4 hover:bg-brandRedDark transition-colors">
-                <i class="ph ph-sliders-horizontal text-white text-3xl"></i>
-                <span class="text-white font-esteban text-2xl tracking-[2px]">Filtros</span>
-            </button>
-
-            <!-- Year Filter -->
-            <div class="md:col-span-3 flex flex-col gap-2">
-                <label class="font-playfair text-textMuted text-xl tracking-[1.5px]">ANO</label>
-                <select class="bg-background border-[3px] border-borderLight rounded-lg p-4 font-esteban text-2xl text-textMuted focus:outline-none focus:border-brandRed cursor-pointer appearance-none">
-                    <option>Todos os anos</option>
-                    <option>1926</option>
-                    <option>1927</option>
-                    <option>1928</option>
-                </select>
-            </div>
-
-            <!-- Gender Filter (Placeholder for future schema update) -->
-            <div class="md:col-span-3 flex flex-col gap-2">
-                <label class="font-playfair text-textMuted text-xl tracking-[1.5px]">SEXO</label>
-                <select class="bg-background border-[3px] border-borderLight rounded-lg p-4 font-esteban text-2xl text-textMuted focus:outline-none focus:border-brandRed cursor-pointer appearance-none">
-                    <option>Todos</option>
-                    <option>Masculino</option>
-                    <option>Feminino</option>
-                </select>
-            </div>
-
-            <!-- Location Filter -->
-            <div class="md:col-span-4 flex flex-col gap-2">
-                <label class="font-playfair text-textMuted text-xl tracking-[1.5px]">LOCALIDADE</label>
-                <select class="bg-background border-[3px] border-borderLight rounded-lg p-4 font-esteban text-2xl text-textMuted focus:outline-none focus:border-brandRed cursor-pointer appearance-none">
-                    <option>Todas</option>
-                    <option>Favaios</option>
-                    <option>Sanfins do Douro</option>
-                    <option>Alijó</option>
-                </select>
-            </div>
         </section>
 
         <!-- Data Table Section -->
@@ -124,15 +83,15 @@
             <div class="overflow-x-auto">
                 <table class="w-full text-left border-collapse min-w-[800px]">
                     <thead>
-                        <tr class="border-b-[3px] border-borderLight">
+                        <tr class="border-b-[3px] border-borderLight bg-headerBg">
                             <th class="p-6 font-playfair font-normal text-textMuted text-2xl tracking-[1.5px] w-2/5">NOME</th>
                             <th class="p-6 font-playfair font-normal text-textMuted text-2xl tracking-[1.5px] text-center w-1/5">IDADE</th>
-                            <th class="p-6 font-playfair font-normal text-textMuted text-2xl tracking-[1.5px] text-center w-1/5">DATA MORTE</th>
-                            <th class="p-6 font-playfair font-normal text-textMuted text-2xl tracking-[1.5px] text-center w-1/5">DATA SEPULTURA</th>
+                            <th class="p-6 font-playfair font-normal text-textMuted text-2xl tracking-[1.5px] text-center w-1/5">DATA ÓBITO</th>
+                            <th class="p-6 font-playfair font-normal text-textMuted text-2xl tracking-[1.5px] text-center w-1/5">AÇÕES</th>
                         </tr>
                     </thead>
                     <tbody id="records-table-body" class="font-esteban text-textDark text-2xl">
-                        <!-- JavaScript will inject rows here from Local Storage -->
+                        <!-- JavaScript will inject TEI parsed rows here -->
                     </tbody>
                 </table>
             </div>
@@ -160,83 +119,342 @@
     </main>
 
     <!-- ==========================================
-         JAVASCRIPT LOGIC
+         MANUSCRIPT VIEWER MODAL
+         ========================================== -->
+    <div id="viewer-modal" class="fixed inset-0 bg-black/70 z-50 hidden flex justify-center items-center p-4 md:p-10 opacity-0 transition-opacity duration-300">
+        <div class="bg-background w-full max-w-5xl h-full max-h-[90vh] rounded-xl shadow-2xl flex flex-col border-[4px] border-borderLight overflow-hidden transform scale-95 transition-transform duration-300" id="viewer-content">
+            
+            <!-- Modal Header -->
+            <div class="bg-headerBg border-b-[3px] border-borderLight p-6 flex justify-between items-center">
+                <h2 class="font-gloock text-3xl text-brandRed flex items-center gap-3">
+                    <i class="ph ph-book-open"></i> Visualizador do Manuscrito
+                </h2>
+                <button onclick="closeViewer()" class="text-textMuted hover:text-brandRed transition-colors bg-white border-2 border-borderLight rounded-full p-2">
+                    <i class="ph ph-x text-2xl"></i>
+                </button>
+            </div>
+
+            <!-- Modal Scrollable Content -->
+            <div class="flex-grow overflow-y-auto p-6 md:p-10">
+                <!-- 1. Ficha de Identificação -->
+                <div id="ficha-identificacao">
+                    <!-- JS will inject the ID Card here -->
+                </div>
+
+                <!-- 2. Texto do Manuscrito -->
+                <div class="mt-8">
+                    <h3 class="font-playfair text-xl text-textMuted tracking-[2px] mb-4 border-b-2 border-borderLight pb-2">TRANSCRIÇÃO DIPLOMÁTICA</h3>
+                    <div id="manuscript-container" class="space-y-6">
+                        <!-- JS will inject the readable text here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==========================================
+         JAVASCRIPT LOGIC (TEI PARSING)
          ========================================== -->
     <script>
-        const STORAGE_KEY = 'favaios_archive_records';
-        let allRecords = [];
+        const STORAGE_KEY = "manuscript_data";
+        const VERSION_KEY = "manuscript_version";
+        
+        let allEntries = []; // Array to store all valid TEI <entry> items
 
-        // 1. Initialize Page
-        function initPage() {
-            // Retrieve data saved from index.html
-            allRecords = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+        // --- MOCK DATA (Fallback caso o JSON real não seja encontrado) ---
+        // Simula a estrutura do template-assento.dtd após ser convertido por xmltodict
+        const mockTeiData = {
+            "div": {
+                "@_type": "parish_register",
+                "list": {
+                    "entry": [
+                        {
+                            "@_n": "12",
+                            "persName": {
+                                "forename": "Maria",
+                                "surname": {"#text": "da Conceição Azevedo"}
+                            },
+                            "p": {
+                                "#text": "Aos catorze dias do mês de Março de ",
+                                "death": {
+                                    "@_when": "1926-03-14",
+                                    "#text": "faleceu"
+                                },
+                                "text_1": " na localidade de ",
+                                "placeName": "Favaios",
+                                "text_2": " com a idade de ",
+                                "age": {
+                                    "@_value": "3",
+                                    "@_unit": "anos",
+                                    "#text": "três anos"
+                                },
+                                "text_3": ", tendo sido sepultada no cemitério local."
+                            },
+                            "signed": "O Pároco, António Alves"
+                        },
+                        {
+                            "@_n": "13",
+                            "persName": {
+                                "forename": "Tereza",
+                                "surname": {"#text": "de Jesus Farinha"}
+                            },
+                            "p": [
+                                {
+                                    "#text": "Aos vinte e dois dias de Agosto ",
+                                    "death": {
+                                        "@_when": "1926-08-22",
+                                        "#text": "faleceu"
+                                    },
+                                    "text_1": " nesta freguesia de ",
+                                    "placeName": "Sanfins do Douro",
+                                    "text_2": " com ",
+                                    "age": {
+                                        "@_value": "71",
+                                        "@_unit": "anos",
+                                        "#text": "setenta e um anos de idade"
+                                    },
+                                    "text_3": ". Recebeu a Extrema Unção."
+                                }
+                            ]
+                        }
+                    ]
+                }
+            }
+        };
+
+        // ==========================================
+        // UTILS: PARSING DTD / TEI
+        // ==========================================
+        function ensureArray(element) {
+            if (!element) return [];
+            return Array.isArray(element) ? element : [element];
+        }
+
+        function findTagInData(data, tagName) {
+            if (typeof data !== 'object' || data === null) return null;
+            if (data[tagName]) return data[tagName];
             
-            // Sort by date initially
-            allRecords.sort((a, b) => new Date(a.data) - new Date(b.data));
+            for (let key in data) {
+                const result = findTagInData(data[key], tagName);
+                if (result) return result;
+            }
+            return null;
+        }
+
+        function extractRawText(data) {
+            if (typeof data === 'string') return data;
+            if (typeof data !== 'object' || data === null) return '';
             
-            renderTable(allRecords);
+            let text = '';
+            // Ordem das chaves não é garantida no JSON, mas o xmltodict tenta manter.
+            // Para texto misto, o ideal é capturar tudo.
+            for (let key in data) {
+                if (key === '#text' || key.startsWith('text_')) {
+                    text += data[key];
+                } else if (!key.startsWith('@_')) {
+                    // Se for uma tag embebida (ex: death, age), extraímos o texto dentro dela
+                    text += extractRawText(data[key]);
+                }
+            }
+            return text;
+        }
+
+        function extractEntryInfo(entry) {
+            const idAssento = entry['@_n'] || 'N/A';
+
+            let nomeCompleto = "Desconhecido";
+            const persNames = ensureArray(entry.persName);
+            if (persNames.length > 0) {
+                const principal = persNames[0];
+                const forenames = ensureArray(principal.forename).map(f => typeof f === 'object' ? f['#text'] : f).join(' ');
+                const surnames = ensureArray(principal.surname).map(s => typeof s === 'object' ? s['#text'] : s).join(' ');
+                nomeCompleto = `${forenames} ${surnames}`.trim();
+            }
+
+            const paragrafos = ensureArray(entry.p);
+            let dataObito = 'Não registada';
+            let idade = 'N/A';
+            let localidade = 'Desconhecida';
+
+            paragrafos.forEach(p => {
+                const deathTag = findTagInData(p, 'death');
+                if (deathTag && deathTag['@_when']) dataObito = deathTag['@_when'];
+
+                const ageTag = findTagInData(p, 'age');
+                if (ageTag && ageTag['@_value']) {
+                    idade = `${ageTag['@_value']} ${ageTag['@_unit'] || 'anos'}`;
+                }
+
+                const placeTag = findTagInData(p, 'placeName');
+                if (placeTag) {
+                    localidade = typeof placeTag === 'object' ? (placeTag['#text'] || 'Sem nome') : placeTag;
+                }
+            });
+
+            return { idAssento, nomeCompleto, dataObito, idade, localidade, paragrafos, signed: entry.signed };
+        }
+
+        // ==========================================
+        // INIT & LOAD
+        // ==========================================
+        async function loadData() {
+            try {
+                // Tentamos ir buscar ao Jamstack pipeline
+                const resData = await fetch('./public/data/manuscript.json');
+                if (!resData.ok) throw new Error("File not found");
+                const data = await resData.json();
+                return data;
+            } catch (error) {
+                console.warn("Aviso: JSON real não encontrado (normal em protótipos locais). A usar Simulação TEI DTD.");
+                return mockTeiData;
+            }
+        }
+
+        async function initPage() {
+            const data = await loadData();
+            
+            // Garantir que a estrutura corresponde ao DTD (div -> list -> entry)
+            if (data && data.div && data.div.list && data.div.list.entry) {
+                allEntries = ensureArray(data.div.list.entry);
+            } else {
+                console.error("Formato JSON inválido. Verifique o output do seu Python pipeline.");
+            }
+            
+            renderTable(allEntries);
             setupSearch();
         }
 
-        // 2. Render Table Rows
-        function renderTable(recordsToRender) {
+        // ==========================================
+        // RENDER UI
+        // ==========================================
+        function renderTable(entriesToRender) {
             const tbody = document.getElementById('records-table-body');
             const noResults = document.getElementById('no-results');
             
             tbody.innerHTML = '';
 
-            if (recordsToRender.length === 0) {
+            if (entriesToRender.length === 0) {
                 noResults.classList.remove('hidden');
             } else {
                 noResults.classList.add('hidden');
 
-                recordsToRender.forEach((record, index) => {
-                    const tr = document.createElement('tr');
-                    
-                    // Add borders between rows, mimicking Figma's separate boxes
-                    if (index !== recordsToRender.length - 1) {
-                        tr.className = "border-b-[3px] border-borderLight bg-cardBg";
-                    } else {
-                        tr.className = "bg-cardBg";
-                    }
-                    
-                    // Format Date
-                    const dateObj = new Date(record.data);
-                    const formattedDate = dateObj.toLocaleDateString('pt-PT');
+                entriesToRender.forEach((entry, index) => {
+                    // Extrai dados usando o parser DTD
+                    const info = extractEntryInfo(entry);
 
-                    // If we don't have burial data in our current schema, show N/A
-                    const sepulturaDate = "N/A";
+                    const tr = document.createElement('tr');
+                    tr.className = "bg-white hover:bg-[#F2EEE9] transition-colors border-b-[3px] border-borderLight";
+                    
+                    // JSON.stringify needs escaping to be passed inside an HTML onclick attribute
+                    const safeEntry = JSON.stringify(entry).replace(/'/g, "\\'").replace(/"/g, '&quot;');
 
                     tr.innerHTML = `
-                        <td class="p-6 tracking-[1.5px]">${record.nome}</td>
-                        <td class="p-6 text-center tracking-[1.5px]">${record.idade} anos</td>
-                        <td class="p-6 text-center tracking-[1.5px]">${formattedDate}</td>
-                        <td class="p-6 text-center tracking-[1.5px] text-textMuted">${sepulturaDate}</td>
+                        <td class="p-6 font-bold text-brandRed tracking-[1.5px]">${info.nomeCompleto}</td>
+                        <td class="p-6 text-center tracking-[1.5px]">${info.idade}</td>
+                        <td class="p-6 text-center tracking-[1.5px]">${info.dataObito}</td>
+                        <td class="p-6 text-center tracking-[1.5px]">
+                            <button onclick="openViewer('${safeEntry}')" class="bg-brandRed text-white px-5 py-2 font-playfair hover:bg-brandRedDark transition-colors rounded shadow-sm inline-flex items-center gap-2">
+                                <i class="ph ph-eye"></i> Ler
+                            </button>
+                        </td>
                     `;
                     tbody.appendChild(tr);
                 });
             }
         }
 
-        // 3. Simple Search Logic (Live Filtering)
         function setupSearch() {
             const searchInput = document.getElementById('search-input');
-            
             searchInput.addEventListener('input', (e) => {
                 const term = e.target.value.toLowerCase();
-                
-                // Filter by name or date string
-                const filtered = allRecords.filter(record => {
-                    return record.nome.toLowerCase().includes(term) || 
-                           record.data.includes(term);
+                const filtered = allEntries.filter(entry => {
+                    const info = extractEntryInfo(entry);
+                    return info.nomeCompleto.toLowerCase().includes(term) || 
+                           info.dataObito.includes(term) ||
+                           info.localidade.toLowerCase().includes(term);
                 });
-                
                 renderTable(filtered);
             });
         }
 
-        // Run when page loads
+        // ==========================================
+        // MODAL (FICHA E TEXTO)
+        // ==========================================
+        function openViewer(entryJsonString) {
+            const entry = JSON.parse(entryJsonString.replace(/&quot;/g, '"'));
+            const info = extractEntryInfo(entry);
+            
+            const modal = document.getElementById('viewer-modal');
+            const content = document.getElementById('viewer-content');
+            
+            // Render Ficha
+            document.getElementById('ficha-identificacao').innerHTML = `
+                <div class="bg-[#F2EEE9] border-[3px] border-[#DCD6CD] rounded-lg p-6 shadow-sm">
+                    <h3 class="font-gloock text-3xl mb-4 border-b-2 border-[#DCD6CD] pb-2 text-brandRed flex flex-col md:flex-row md:items-center justify-between gap-4">
+                        <span>Ficha de Identificação</span>
+                        <span class="text-sm font-esteban bg-white px-4 py-2 rounded border-2 border-[#DCD6CD] text-textMuted">Assento Nº ${info.idAssento}</span>
+                    </h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 font-esteban text-xl text-textDark">
+                        <p><strong>Nome:</strong> <span class="text-brandRed font-bold">${info.nomeCompleto}</span></p>
+                        <p><strong>Data do Óbito:</strong> ${info.dataObito}</p>
+                        <p><strong>Idade Registada:</strong> ${info.idade}</p>
+                        <p><strong>Localidade:</strong> ${info.localidade}</p>
+                    </div>
+                </div>
+            `;
+
+            // Render Texto Corrido
+            let htmlTexto = "";
+            info.paragrafos.forEach(p => {
+                const textoLimpo = extractRawText(p);
+                htmlTexto += `
+                    <div class="p-6 bg-[#F8F6F2] border border-[#DCD6CD] rounded-lg shadow-sm">
+                        <p class="font-esteban text-2xl leading-relaxed text-[#383838]">
+                            ${textoLimpo}
+                        </p>
+                    </div>
+                `;
+            });
+
+            // Assinaturas
+            const assinaturas = ensureArray(info.signed);
+            assinaturas.forEach(sig => {
+                const textoAssinatura = extractRawText(sig);
+                if(textoAssinatura) {
+                    htmlTexto += `
+                        <div class="text-right mt-6 text-2xl font-playfair italic text-textMuted">
+                            ${textoAssinatura}
+                        </div>
+                    `;
+                }
+            });
+
+            document.getElementById('manuscript-container').innerHTML = htmlTexto;
+
+            // Show Modal with animation
+            modal.classList.remove('hidden');
+            // Timeout allows the browser to render 'display:block' before applying opacity transition
+            setTimeout(() => {
+                modal.classList.remove('opacity-0');
+                content.classList.remove('scale-95');
+            }, 10);
+        }
+
+        function closeViewer() {
+            const modal = document.getElementById('viewer-modal');
+            const content = document.getElementById('viewer-content');
+            
+            modal.classList.add('opacity-0');
+            content.classList.add('scale-95');
+            
+            setTimeout(() => {
+                modal.classList.add('hidden');
+            }, 300); // Matches Tailwind transition duration
+        }
+
+        // Boot
         window.onload = initPage;
+
     </script>
 </body>
 </html>
