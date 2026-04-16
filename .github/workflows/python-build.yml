@@ -9,6 +9,7 @@ on:
       - 'backend/xml_raw/**/*.xml'
       - 'backend/schema.dtd'
       - 'backend/pipeline.py'
+  workflow_dispatch: # Esta linha permite iniciar o workflow manualmente no GitHub!
 
 permissions:
   contents: write
