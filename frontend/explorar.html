@@ -111,7 +111,10 @@
             </div>
 
             <div class="flex-grow overflow-y-auto p-6 md:p-10">
+                <!-- Zona onde a ficha será gerada -->
                 <div id="ficha-identificacao"></div>
+                
+                <!-- Zona onde o texto corrido será gerado -->
                 <div class="mt-8">
                     <h3 class="font-playfair text-xl text-textMuted tracking-[2px] mb-4 border-b-2 border-borderLight pb-2">TRANSCRIÇÃO DIPLOMÁTICA</h3>
                     <div id="manuscript-container" class="space-y-6"></div>
@@ -121,29 +124,26 @@
     </div>
 
     <!-- ==========================================
-         JAVASCRIPT LOGIC (TEI JSON PARSING)
+         JAVASCRIPT LOGIC
          ========================================== -->
     <script>
         let allEntries = [];
 
-        // --- FUNÇÕES AUXILIARES DE LIMPEZA E EXTRAÇÃO ---
-        
+        // --- FUNÇÕES AUXILIARES ---
         function ensureArray(element) {
             if (!element) return [];
             return Array.isArray(element) ? element : [element];
         }
 
-        // Obtém o texto limpo, lidando com __text (novo), #text (antigo) ou strings simples
         function getTextContent(obj) {
             if (typeof obj === 'string') return obj;
             if (typeof obj === 'object' && obj !== null) {
                 const text = obj['__text'] || obj['#text'] || '';
-                return text.replace(/\n\s*/g, ' ').trim(); // Remove quebras de linha estranhas
+                return text.replace(/\n\s*/g, ' ').trim();
             }
             return '';
         }
 
-        // Procura uma tag específica (ex: 'death', 'age') de forma recursiva
         function findTagInData(data, tagName) {
             if (typeof data !== 'object' || data === null) return null;
             if (data[tagName]) return data[tagName];
@@ -155,7 +155,7 @@
             return null;
         }
 
-        // Reconstrói o texto corrido ignorando atributos estruturais
+        // Utilizado agora apenas para as assinaturas, pois o <p> já vem pronto no _full_text
         function extractRawText(data) {
             if (typeof data === 'string') return data.replace(/\n\s*/g, ' ').trim();
             if (Array.isArray(data)) return data.map(extractRawText).join(' ');
@@ -166,48 +166,56 @@
                 if (key === '__text' || key === '#text') {
                     textParts.push(data[key].replace(/\n\s*/g, ' ').trim());
                 } else if (!key.startsWith('_') && !key.startsWith('@_')) {
-                    // Ignora atributos como _type, _id, _when. Entra apenas noutras tags.
                     textParts.push(extractRawText(data[key]));
                 }
             }
             return textParts.filter(Boolean).join(' ');
         }
 
-        // Processa a informação do teu JSON específico
+        // --- PROCESSAMENTO DO JSON ---
         function extractEntryInfo(entry) {
+            // Suporta formatos antigos e novos do parser
             const idAssento = entry['_n'] || entry['@_n'] || 'N/A';
 
             let nomeCompleto = "Desconhecido";
             const persNames = ensureArray(entry.persName);
             
             if (persNames.length > 0) {
-                // Procura o principal (_type="deceased")
                 const deceased = persNames.find(p => p['_type'] === 'deceased' || p['@_type'] === 'deceased') || persNames[0];
                 const forenames = ensureArray(deceased.forename).map(getTextContent).join(' ');
                 const surnames = ensureArray(deceased.surname).map(getTextContent).join(' ');
-                nomeCompleto = `${forenames} ${surnames}`.trim();
+                // Substituir erros de formatação onde "daConceição" ficou colado
+                nomeCompleto = `${forenames} ${surnames}`.trim().replace(/daConceição/g, "da Conceição");
             }
 
             const p = entry.p || {};
             const deathTag = findTagInData(p, 'death');
             const ageTag = findTagInData(p, 'age');
-            const placeTags = ensureArray(findTagInData(p, 'placeName')); // placeName vem como Array no teu JSON
+            const placeTags = ensureArray(findTagInData(p, 'placeName'));
 
             const dataObito = deathTag ? (deathTag['_when'] || deathTag['@_when'] || 'N/A') : 'N/A';
             const idadeVal = ageTag ? (ageTag['_value'] || ageTag['@_value'] || '') : '';
             const idadeUnit = ageTag ? (ageTag['_unit'] || ageTag['@_unit'] || 'anos') : '';
             const idade = idadeVal ? `${idadeVal} ${idadeUnit}` : 'N/A';
             
-            // Junta todas as localidades encontradas (Logar, Freguesia, Diocese, etc.)
             const localidade = placeTags.map(getTextContent).filter(t => t).join(', ') || 'N/A';
 
-            return { idAssento, nomeCompleto, dataObito, idade, localidade, paragrafos: ensureArray(entry.p), signed: entry.signed };
+            // NOVO: Captura o texto corrido guardado na variável do novo conversor Python
+            const transcricaoCompleta = entry['_full_text'] || "Texto de transcrição não disponível.";
+
+            return { 
+                idAssento, 
+                nomeCompleto, 
+                dataObito, 
+                idade, 
+                localidade, 
+                transcricaoCompleta, 
+                signed: entry.signed 
+            };
         }
 
-        // --- CARREGAMENTO E INICIALIZAÇÃO ---
-        
+        // --- INICIALIZAÇÃO ---
         async function loadData() {
-            // Tenta vários caminhos. O primeiro a funcionar, ganha!
             const pathsToTry = [
                 './manuscript.json',
                 './public/data/manuscript.json',         
@@ -218,12 +226,10 @@
                 try {
                     const resData = await fetch(path);
                     if (resData.ok) {
-                        console.log(`✅ Sucesso! Ficheiro encontrado em: ${path}`);
+                        console.log(`✅ JSON encontrado em: ${path}`);
                         return await resData.json();
                     }
-                } catch (error) {
-                    // Tenta o próximo caminho
-                }
+                } catch (error) {}
             }
             return null;
         }
@@ -239,12 +245,11 @@
                 setupSearch();
             } else {
                 msgBox.classList.remove('hidden');
-                msgText.innerHTML = "Não foi possível carregar ou processar os dados do <strong>manuscript.json</strong>.";
+                msgText.innerHTML = "Não foi possível carregar os dados do <strong>manuscript.json</strong>.";
             }
         }
 
-        // --- INTERFACE (TABELA E PESQUISA) ---
-        
+        // --- INTERFACE E LÓGICA DE TABELA ---
         function renderTable(entriesToRender) {
             const tbody = document.getElementById('records-table-body');
             const noResults = document.getElementById('no-results');
@@ -261,15 +266,13 @@
                     const tr = document.createElement('tr');
                     tr.className = "bg-white hover:bg-[#F2EEE9] transition-colors border-b-[3px] border-borderLight";
                     
-                    // Preparamos o JSON da entry para passar pelo evento onclick de forma segura
-                    const safeEntry = JSON.stringify(entry).replace(/'/g, "\\'").replace(/"/g, '&quot;');
-
+                    // Em vez de enviar o JSON todo no botão, enviamos apenas o ID seguro (ex: '2')
                     tr.innerHTML = `
                         <td class="p-6 font-bold text-brandRed tracking-[1.5px]">${info.nomeCompleto}</td>
                         <td class="p-6 text-center tracking-[1.5px]">${info.idade}</td>
                         <td class="p-6 text-center tracking-[1.5px]">${info.dataObito}</td>
                         <td class="p-6 text-center tracking-[1.5px]">
-                            <button onclick="openViewer('${safeEntry}')" class="bg-brandRed text-white px-5 py-2 font-playfair hover:bg-brandRedDark transition-colors rounded shadow-sm inline-flex items-center gap-2">
+                            <button onclick="openViewer('${info.idAssento}')" class="bg-brandRed text-white px-5 py-2 font-playfair hover:bg-brandRedDark transition-colors rounded shadow-sm inline-flex items-center gap-2">
                                 <i class="ph ph-eye"></i> Ler
                             </button>
                         </td>
@@ -294,15 +297,20 @@
         }
 
         // --- INTERFACE (MODAL DO VISUALIZADOR) ---
-        
-        function openViewer(entryJsonString) {
-            const entry = JSON.parse(entryJsonString.replace(/&quot;/g, '"'));
-            const info = extractEntryInfo(entry);
+        function openViewer(idAssento) {
+            // Vai à memória buscar o registo correto, sem arriscar crash do HTML
+            const entry = allEntries.find(e => {
+                const n = e['_n'] || e['@_n'];
+                return n === idAssento;
+            });
             
+            if (!entry) return; // Segurança caso o ID não exista
+
+            const info = extractEntryInfo(entry);
             const modal = document.getElementById('viewer-modal');
             const content = document.getElementById('viewer-content');
             
-            // Constrói a Ficha de Identificação
+            // Ficha de Identificação
             document.getElementById('ficha-identificacao').innerHTML = `
                 <div class="bg-[#F2EEE9] border-[3px] border-[#DCD6CD] rounded-lg p-6 shadow-sm">
                     <h3 class="font-gloock text-3xl mb-4 border-b-2 border-[#DCD6CD] pb-2 text-brandRed flex flex-col md:flex-row md:items-center justify-between gap-4">
@@ -318,20 +326,16 @@
                 </div>
             `;
 
-            // Constrói a Transcrição Diplomática
-            let htmlTexto = "";
-            info.paragrafos.forEach(p => {
-                const textoLimpo = extractRawText(p);
-                htmlTexto += `
-                    <div class="p-6 bg-[#F8F6F2] border border-[#DCD6CD] rounded-lg shadow-sm">
-                        <p class="font-esteban text-2xl leading-relaxed text-[#383838]">
-                            ${textoLimpo}
-                        </p>
-                    </div>
-                `;
-            });
+            // Transcrição Diplomática (Lê o campo _full_text diretamente!)
+            let htmlTexto = `
+                <div class="p-6 bg-[#F8F6F2] border border-[#DCD6CD] rounded-lg shadow-sm">
+                    <p class="font-esteban text-2xl leading-relaxed text-[#383838]">
+                        ${info.transcricaoCompleta}
+                    </p>
+                </div>
+            `;
 
-            // Constrói Assinatura(s)
+            // Mantém a Assinatura usando a função recursiva antiga
             const assinaturas = ensureArray(info.signed);
             assinaturas.forEach(sig => {
                 const textoAssinatura = extractRawText(sig);
@@ -346,7 +350,7 @@
 
             document.getElementById('manuscript-container').innerHTML = htmlTexto;
 
-            // Mostra o Modal com animação suave
+            // Mostra o modal com animação suave
             modal.classList.remove('hidden');
             setTimeout(() => {
                 modal.classList.remove('opacity-0');
@@ -368,7 +372,6 @@
 
         // Arranca o código ao carregar a página
         window.onload = initPage;
-
     </script>
 </body>
 </html>
