@@ -50,13 +50,10 @@
          HEADER
          ========================================== -->
     <header class="bg-headerBg border-b-[3px] border-borderLight relative py-10 px-6 flex items-center justify-center z-10">
-        <!-- Back Button -->
         <a href="index.html" class="absolute left-6 md:left-12 flex items-center gap-2 text-textDark hover:text-brandRed transition-colors group">
             <i class="ph ph-arrow-left text-3xl group-hover:-translate-x-1 transition-transform"></i>
             <span class="font-esteban text-xl hidden md:block">Voltar</span>
         </a>
-        
-        <!-- Page Title -->
         <h1 class="font-gloock text-4xl md:text-6xl tracking-[3.2px] text-textDark text-center">
             Explorar Registos
         </h1>
@@ -66,16 +63,11 @@
          MAIN CONTENT AREA
          ========================================== -->
     <main class="flex-grow max-w-[1400px] w-full mx-auto px-6 py-12 flex flex-col gap-8 relative z-0">
-
         <!-- Search Bar Section -->
         <section class="bg-cardBg border-[3px] border-borderLight rounded-xl shadow-[0_4px_13px_rgba(0,0,0,0.05)] p-4 md:p-6 flex items-center gap-4">
             <i class="ph ph-magnifying-glass text-4xl md:text-5xl text-textMuted ml-2"></i>
-            <input 
-                type="text" 
-                id="search-input"
-                placeholder="Pesquisar por nome, localidade ou ano..." 
-                class="bg-transparent border-none w-full text-2xl md:text-4xl font-esteban text-textMuted placeholder-textMuted/60 focus:outline-none tracking-wide"
-            >
+            <input type="text" id="search-input" placeholder="Pesquisar por nome, localidade ou ano..." 
+                   class="bg-transparent border-none w-full text-2xl md:text-4xl font-esteban text-textMuted placeholder-textMuted/60 focus:outline-none tracking-wide">
         </section>
 
         <!-- Data Table Section -->
@@ -91,31 +83,16 @@
                         </tr>
                     </thead>
                     <tbody id="records-table-body" class="font-esteban text-textDark text-2xl">
-                        <!-- JavaScript will inject TEI parsed rows here -->
+                        <!-- Linhas injetadas por JS -->
                     </tbody>
                 </table>
             </div>
             
-            <!-- Empty State -->
             <div id="no-results" class="hidden text-center py-16 text-textMuted">
                 <i class="ph ph-magnifying-glass-minus text-6xl mb-4 opacity-50"></i>
-                <p class="text-2xl">Nenhum registo encontrado.</p>
+                <p class="text-2xl" id="no-results-msg">Nenhum registo encontrado.</p>
             </div>
         </section>
-
-        <!-- Pagination Section -->
-        <section class="flex items-center justify-between md:justify-center md:gap-12 py-8 mt-auto">
-            <button class="bg-background border-[3px] border-borderLight rounded-xl px-8 py-4 font-esteban text-2xl text-textMuted opacity-50 cursor-not-allowed tracking-[1.8px]">
-                Anterior
-            </button>
-            <span class="font-esteban text-2xl text-textMuted tracking-[1.8px]">
-                Página 1 de 1
-            </span>
-            <button class="bg-background border-[3px] border-borderLight rounded-xl px-8 py-4 font-esteban text-2xl text-textDark hover:border-textMuted transition-colors tracking-[1.8px]">
-                Seguinte
-            </button>
-        </section>
-
     </main>
 
     <!-- ==========================================
@@ -124,7 +101,6 @@
     <div id="viewer-modal" class="fixed inset-0 bg-black/70 z-50 hidden flex justify-center items-center p-4 md:p-10 opacity-0 transition-opacity duration-300">
         <div class="bg-background w-full max-w-5xl h-full max-h-[90vh] rounded-xl shadow-2xl flex flex-col border-[4px] border-borderLight overflow-hidden transform scale-95 transition-transform duration-300" id="viewer-content">
             
-            <!-- Modal Header -->
             <div class="bg-headerBg border-b-[3px] border-borderLight p-6 flex justify-between items-center">
                 <h2 class="font-gloock text-3xl text-brandRed flex items-center gap-3">
                     <i class="ph ph-book-open"></i> Visualizador do Manuscrito
@@ -134,102 +110,40 @@
                 </button>
             </div>
 
-            <!-- Modal Scrollable Content -->
             <div class="flex-grow overflow-y-auto p-6 md:p-10">
-                <!-- 1. Ficha de Identificação -->
-                <div id="ficha-identificacao">
-                    <!-- JS will inject the ID Card here -->
-                </div>
-
-                <!-- 2. Texto do Manuscrito -->
+                <div id="ficha-identificacao"></div>
                 <div class="mt-8">
                     <h3 class="font-playfair text-xl text-textMuted tracking-[2px] mb-4 border-b-2 border-borderLight pb-2">TRANSCRIÇÃO DIPLOMÁTICA</h3>
-                    <div id="manuscript-container" class="space-y-6">
-                        <!-- JS will inject the readable text here -->
-                    </div>
+                    <div id="manuscript-container" class="space-y-6"></div>
                 </div>
             </div>
         </div>
     </div>
 
     <!-- ==========================================
-         JAVASCRIPT LOGIC (TEI PARSING)
+         JAVASCRIPT LOGIC (TEI JSON PARSING)
          ========================================== -->
     <script>
-        const STORAGE_KEY = "manuscript_data";
-        const VERSION_KEY = "manuscript_version";
+        let allEntries = [];
+
+        // --- FUNÇÕES AUXILIARES DE LIMPEZA E EXTRAÇÃO ---
         
-        let allEntries = []; // Array to store all valid TEI <entry> items
-
-        // --- MOCK DATA (Fallback caso o JSON real não seja encontrado) ---
-        // Simula a estrutura do template-assento.dtd após ser convertido por xmltodict
-        const mockTeiData = {
-            "div": {
-                "@_type": "parish_register",
-                "list": {
-                    "entry": [
-                        {
-                            "@_n": "12",
-                            "persName": {
-                                "forename": "Maria",
-                                "surname": {"#text": "da Conceição Azevedo"}
-                            },
-                            "p": {
-                                "#text": "Aos catorze dias do mês de Março de ",
-                                "death": {
-                                    "@_when": "1926-03-14",
-                                    "#text": "faleceu"
-                                },
-                                "text_1": " na localidade de ",
-                                "placeName": "Favaios",
-                                "text_2": " com a idade de ",
-                                "age": {
-                                    "@_value": "3",
-                                    "@_unit": "anos",
-                                    "#text": "três anos"
-                                },
-                                "text_3": ", tendo sido sepultada no cemitério local."
-                            },
-                            "signed": "O Pároco, António Alves"
-                        },
-                        {
-                            "@_n": "13",
-                            "persName": {
-                                "forename": "Tereza",
-                                "surname": {"#text": "de Jesus Farinha"}
-                            },
-                            "p": [
-                                {
-                                    "#text": "Aos vinte e dois dias de Agosto ",
-                                    "death": {
-                                        "@_when": "1926-08-22",
-                                        "#text": "faleceu"
-                                    },
-                                    "text_1": " nesta freguesia de ",
-                                    "placeName": "Sanfins do Douro",
-                                    "text_2": " com ",
-                                    "age": {
-                                        "@_value": "71",
-                                        "@_unit": "anos",
-                                        "#text": "setenta e um anos de idade"
-                                    },
-                                    "text_3": ". Recebeu a Extrema Unção."
-                                }
-                            ]
-                        }
-                    ]
-                }
-            }
-        };
-
-        // ==========================================
-        // UTILS: PARSING DTD / TEI
-        // ==========================================
         function ensureArray(element) {
             if (!element) return [];
             return Array.isArray(element) ? element : [element];
         }
 
+        // Obtém o texto limpo, lidando com __text (novo), #text (antigo) ou strings simples
+        function getTextContent(obj) {
+            if (typeof obj === 'string') return obj;
+            if (typeof obj === 'object' && obj !== null) {
+                const text = obj['__text'] || obj['#text'] || '';
+                return text.replace(/\n\s*/g, ' ').trim(); // Remove quebras de linha estranhas
+            }
+            return '';
+        }
+
+        // Procura uma tag específica (ex: 'death', 'age') de forma recursiva
         function findTagInData(data, tagName) {
             if (typeof data !== 'object' || data === null) return null;
             if (data[tagName]) return data[tagName];
@@ -241,92 +155,96 @@
             return null;
         }
 
+        // Reconstrói o texto corrido ignorando atributos estruturais
         function extractRawText(data) {
-            if (typeof data === 'string') return data;
+            if (typeof data === 'string') return data.replace(/\n\s*/g, ' ').trim();
+            if (Array.isArray(data)) return data.map(extractRawText).join(' ');
             if (typeof data !== 'object' || data === null) return '';
             
-            let text = '';
-            // Ordem das chaves não é garantida no JSON, mas o xmltodict tenta manter.
-            // Para texto misto, o ideal é capturar tudo.
+            let textParts = [];
             for (let key in data) {
-                if (key === '#text' || key.startsWith('text_')) {
-                    text += data[key];
-                } else if (!key.startsWith('@_')) {
-                    // Se for uma tag embebida (ex: death, age), extraímos o texto dentro dela
-                    text += extractRawText(data[key]);
+                if (key === '__text' || key === '#text') {
+                    textParts.push(data[key].replace(/\n\s*/g, ' ').trim());
+                } else if (!key.startsWith('_') && !key.startsWith('@_')) {
+                    // Ignora atributos como _type, _id, _when. Entra apenas noutras tags.
+                    textParts.push(extractRawText(data[key]));
                 }
             }
-            return text;
+            return textParts.filter(Boolean).join(' ');
         }
 
+        // Processa a informação do teu JSON específico
         function extractEntryInfo(entry) {
-            const idAssento = entry['@_n'] || 'N/A';
+            const idAssento = entry['_n'] || entry['@_n'] || 'N/A';
 
             let nomeCompleto = "Desconhecido";
             const persNames = ensureArray(entry.persName);
+            
             if (persNames.length > 0) {
-                const principal = persNames[0];
-                const forenames = ensureArray(principal.forename).map(f => typeof f === 'object' ? f['#text'] : f).join(' ');
-                const surnames = ensureArray(principal.surname).map(s => typeof s === 'object' ? s['#text'] : s).join(' ');
+                // Procura o principal (_type="deceased")
+                const deceased = persNames.find(p => p['_type'] === 'deceased' || p['@_type'] === 'deceased') || persNames[0];
+                const forenames = ensureArray(deceased.forename).map(getTextContent).join(' ');
+                const surnames = ensureArray(deceased.surname).map(getTextContent).join(' ');
                 nomeCompleto = `${forenames} ${surnames}`.trim();
             }
 
-            const paragrafos = ensureArray(entry.p);
-            let dataObito = 'Não registada';
-            let idade = 'N/A';
-            let localidade = 'Desconhecida';
+            const p = entry.p || {};
+            const deathTag = findTagInData(p, 'death');
+            const ageTag = findTagInData(p, 'age');
+            const placeTags = ensureArray(findTagInData(p, 'placeName')); // placeName vem como Array no teu JSON
 
-            paragrafos.forEach(p => {
-                const deathTag = findTagInData(p, 'death');
-                if (deathTag && deathTag['@_when']) dataObito = deathTag['@_when'];
+            const dataObito = deathTag ? (deathTag['_when'] || deathTag['@_when'] || 'N/A') : 'N/A';
+            const idadeVal = ageTag ? (ageTag['_value'] || ageTag['@_value'] || '') : '';
+            const idadeUnit = ageTag ? (ageTag['_unit'] || ageTag['@_unit'] || 'anos') : '';
+            const idade = idadeVal ? `${idadeVal} ${idadeUnit}` : 'N/A';
+            
+            // Junta todas as localidades encontradas (Logar, Freguesia, Diocese, etc.)
+            const localidade = placeTags.map(getTextContent).filter(t => t).join(', ') || 'N/A';
 
-                const ageTag = findTagInData(p, 'age');
-                if (ageTag && ageTag['@_value']) {
-                    idade = `${ageTag['@_value']} ${ageTag['@_unit'] || 'anos'}`;
-                }
-
-                const placeTag = findTagInData(p, 'placeName');
-                if (placeTag) {
-                    localidade = typeof placeTag === 'object' ? (placeTag['#text'] || 'Sem nome') : placeTag;
-                }
-            });
-
-            return { idAssento, nomeCompleto, dataObito, idade, localidade, paragrafos, signed: entry.signed };
+            return { idAssento, nomeCompleto, dataObito, idade, localidade, paragrafos: ensureArray(entry.p), signed: entry.signed };
         }
 
-        // ==========================================
-        // INIT & LOAD
-        // ==========================================
+        // --- CARREGAMENTO E INICIALIZAÇÃO ---
+        
         async function loadData() {
-            try {
-                // Tentamos ir buscar ao Jamstack pipeline
-                const resData = await fetch('./public/data/manuscript.json');
-                if (!resData.ok) throw new Error("File not found");
-                const data = await resData.json();
-                return data;
-            } catch (error) {
-                console.warn("Aviso: JSON real não encontrado (normal em protótipos locais). A usar Simulação TEI DTD.");
-                return mockTeiData;
+            // Tenta vários caminhos. O primeiro a funcionar, ganha!
+            const pathsToTry = [
+                './manuscript.json',
+                './public/data/manuscript.json',         
+                './data/manuscript.json'
+            ];
+
+            for (const path of pathsToTry) {
+                try {
+                    const resData = await fetch(path);
+                    if (resData.ok) {
+                        console.log(`✅ Sucesso! Ficheiro encontrado em: ${path}`);
+                        return await resData.json();
+                    }
+                } catch (error) {
+                    // Tenta o próximo caminho
+                }
             }
+            return null;
         }
 
         async function initPage() {
             const data = await loadData();
+            const msgBox = document.getElementById('no-results');
+            const msgText = document.getElementById('no-results-msg');
             
-            // Garantir que a estrutura corresponde ao DTD (div -> list -> entry)
             if (data && data.div && data.div.list && data.div.list.entry) {
                 allEntries = ensureArray(data.div.list.entry);
+                renderTable(allEntries);
+                setupSearch();
             } else {
-                console.error("Formato JSON inválido. Verifique o output do seu Python pipeline.");
+                msgBox.classList.remove('hidden');
+                msgText.innerHTML = "Não foi possível carregar ou processar os dados do <strong>manuscript.json</strong>.";
             }
-            
-            renderTable(allEntries);
-            setupSearch();
         }
 
-        // ==========================================
-        // RENDER UI
-        // ==========================================
+        // --- INTERFACE (TABELA E PESQUISA) ---
+        
         function renderTable(entriesToRender) {
             const tbody = document.getElementById('records-table-body');
             const noResults = document.getElementById('no-results');
@@ -338,14 +256,12 @@
             } else {
                 noResults.classList.add('hidden');
 
-                entriesToRender.forEach((entry, index) => {
-                    // Extrai dados usando o parser DTD
+                entriesToRender.forEach((entry) => {
                     const info = extractEntryInfo(entry);
-
                     const tr = document.createElement('tr');
                     tr.className = "bg-white hover:bg-[#F2EEE9] transition-colors border-b-[3px] border-borderLight";
                     
-                    // JSON.stringify needs escaping to be passed inside an HTML onclick attribute
+                    // Preparamos o JSON da entry para passar pelo evento onclick de forma segura
                     const safeEntry = JSON.stringify(entry).replace(/'/g, "\\'").replace(/"/g, '&quot;');
 
                     tr.innerHTML = `
@@ -377,9 +293,8 @@
             });
         }
 
-        // ==========================================
-        // MODAL (FICHA E TEXTO)
-        // ==========================================
+        // --- INTERFACE (MODAL DO VISUALIZADOR) ---
+        
         function openViewer(entryJsonString) {
             const entry = JSON.parse(entryJsonString.replace(/&quot;/g, '"'));
             const info = extractEntryInfo(entry);
@@ -387,7 +302,7 @@
             const modal = document.getElementById('viewer-modal');
             const content = document.getElementById('viewer-content');
             
-            // Render Ficha
+            // Constrói a Ficha de Identificação
             document.getElementById('ficha-identificacao').innerHTML = `
                 <div class="bg-[#F2EEE9] border-[3px] border-[#DCD6CD] rounded-lg p-6 shadow-sm">
                     <h3 class="font-gloock text-3xl mb-4 border-b-2 border-[#DCD6CD] pb-2 text-brandRed flex flex-col md:flex-row md:items-center justify-between gap-4">
@@ -398,12 +313,12 @@
                         <p><strong>Nome:</strong> <span class="text-brandRed font-bold">${info.nomeCompleto}</span></p>
                         <p><strong>Data do Óbito:</strong> ${info.dataObito}</p>
                         <p><strong>Idade Registada:</strong> ${info.idade}</p>
-                        <p><strong>Localidade:</strong> ${info.localidade}</p>
+                        <p><strong>Localidades Mencionadas:</strong> ${info.localidade}</p>
                     </div>
                 </div>
             `;
 
-            // Render Texto Corrido
+            // Constrói a Transcrição Diplomática
             let htmlTexto = "";
             info.paragrafos.forEach(p => {
                 const textoLimpo = extractRawText(p);
@@ -416,7 +331,7 @@
                 `;
             });
 
-            // Assinaturas
+            // Constrói Assinatura(s)
             const assinaturas = ensureArray(info.signed);
             assinaturas.forEach(sig => {
                 const textoAssinatura = extractRawText(sig);
@@ -431,9 +346,8 @@
 
             document.getElementById('manuscript-container').innerHTML = htmlTexto;
 
-            // Show Modal with animation
+            // Mostra o Modal com animação suave
             modal.classList.remove('hidden');
-            // Timeout allows the browser to render 'display:block' before applying opacity transition
             setTimeout(() => {
                 modal.classList.remove('opacity-0');
                 content.classList.remove('scale-95');
@@ -449,10 +363,10 @@
             
             setTimeout(() => {
                 modal.classList.add('hidden');
-            }, 300); // Matches Tailwind transition duration
+            }, 300);
         }
 
-        // Boot
+        // Arranca o código ao carregar a página
         window.onload = initPage;
 
     </script>
