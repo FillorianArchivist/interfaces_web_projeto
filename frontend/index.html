@@ -5,9 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Arquivo Paroquial - Manuscritos de Favaios</title>
     
+    <!-- Tailwind CSS (Modular Styling Framework) -->
     <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts imported from your Figma design -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant:wght@700&family=Esteban&family=Gloock&family=Playfair+Display:wght@500;600&display=swap" rel="stylesheet">
+    
+    <!-- Phosphor Icons for the Footer -->
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
 
+    <!-- Custom Tailwind Configuration to match your exact Figma Colors and Fonts -->
     <script>
         tailwind.config = {
             theme: {
@@ -15,204 +24,131 @@
                     colors: {
                         background: '#F8F6F2',
                         gold: '#D1A537',
+                        goldDark: '#BF984B',
                         lightText: '#EBE2DB',
                         darkText: '#2D2724',
+                        cardBorder: '#BFB7B1',
                         brandRed: '#661515',
+                        brandRedDark: '#4a0f0f'
+                    },
+                    fontFamily: {
+                        playfair: ['"Playfair Display"', 'serif'],
+                        gloock: ['"Gloock"', 'serif'],
+                        esteban: ['"Esteban"', 'serif'],
+                        cormorant: ['"Cormorant"', 'serif'],
                     }
                 }
             }
         }
     </script>
-
-    <style>
-        /* 1. FONTES EXTERNAS */
-        @font-face { font-family: 'Cormorant'; font-weight: 700; src: url(https://fonts.gstatic.com/s/cormorant/v24/H4c2BXOCl9bbnla_nHIA47NMUjsNbCVrFvZUc7Nq7Q.woff2) format('woff2'); }
-        @font-face { font-family: 'Esteban'; font-weight: 400; src: url(https://fonts.gstatic.com/s/esteban/v16/r05bGLZE-bdGdN-GROyJ5w.woff2) format('woff2'); }
-        @font-face { font-family: 'Gloock'; font-weight: 400; src: url(https://fonts.gstatic.com/s/gloock/v8/Iurb6YFw84WUY4NJiBak.woff2) format('woff2'); }
-        @font-face { font-family: 'Playfair Display'; font-weight: 500; src: url(https://fonts.gstatic.com/s/playfairdisplay/v40/nuFiD-vYSZviVYUb_rj3ij__anPXDTzYgA.woff2) format('woff2'); }
-
-        /* 2. ESTILOS BASE */
-        body { 
-            background-color: #F8F6F2; 
-            font-family: 'Esteban', serif; 
-            color: #2D2724; 
-            margin: 0; 
-            -webkit-font-smoothing: antialiased; 
-        }
-
-        /* 3. HERO SECTION */
-        .hero-container { 
-            position: relative; 
-            min-height: 90vh; 
-            display: flex; 
-            flex-direction: column; 
-            align-items: center; 
-            justify-content: center; 
-            text-align: center; 
-            padding: 2rem 1rem; 
-            overflow: hidden; 
-        }
-        .hero-bg-wrapper { position: absolute; inset: 0; z-index: 0; }
-        .hero-img { width: 100%; height: 100%; object-fit: cover; }
-        .hero-overlay { 
-            position: absolute; inset: 0; 
-            background: linear-gradient(to bottom, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.4) 100%); 
-        }
-        .hero-fade-bottom { 
-            position: absolute; bottom: 0; left: 0; width: 100%; height: 150px; 
-            background: linear-gradient(to top, #F8F6F2, transparent); 
-        }
-        
-        .hero-content { position: relative; z-index: 10; width: 100%; max-width: 900px; }
-        .hero-subtitle { font-family: 'Playfair Display', serif; color: #D1A537; font-size: 0.9rem; letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 0.5rem; }
-        .hero-title { font-family: 'Gloock', serif; color: #EBE2DB; font-size: 3.5rem; line-height: 1.1; margin-bottom: 1.5rem; }
-        .hero-description { font-family: 'Esteban', serif; color: rgba(235,226,219,0.9); font-size: 1rem; max-width: 600px; margin: 0 auto 2.5rem; line-height: 1.6; }
-
-        /* 4. NAVEGAÇÃO 2x2 (DISPOSIÇÃO LADO A LADO) */
-        .nav-grid { 
-            display: flex; 
-            flex-wrap: wrap; 
-            justify-content: center; 
-            gap: 12px; 
-            max-width: 800px; 
-            margin: 0 auto; 
-        }
-        .nav-card { 
-            flex: 0 0 calc(50% - 12px); /* Força 2 por linha no PC */
-            min-width: 280px; 
-            height: 80px; 
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
-            border: 1px solid rgba(255,255,255,0.4); 
-            text-decoration: none; 
-            background: rgba(0,0,0,0.2); 
-            transition: all 0.3s ease; 
-        }
-        .nav-card:hover { border-color: #D1A537; background: rgba(209, 165, 55, 0.1); }
-        .nav-card-text { font-family: 'Playfair Display', serif; color: #EBE2DB; font-size: 1rem; letter-spacing: 0.05em; }
-
-        /* 5. ESTATÍSTICAS (4 COLUNAS LADO A LADO) */
-        .stats-section { padding: 4rem 1rem; max-width: 1100px; margin: 0 auto; }
-        .stats-header { text-align: center; margin-bottom: 3rem; }
-        .stats-label { font-family: 'Playfair Display', serif; color: #BF984B; font-size: 1rem; letter-spacing: 0.15em; margin-bottom: 0.5rem; }
-        .stats-main-title { font-family: 'Gloock', serif; font-size: 2rem; color: #2D2724; }
-        
-        .stats-flex { 
-            display: flex; 
-            flex-direction: row; 
-            justify-content: space-between; 
-            gap: 15px; 
-        }
-        .stat-card { 
-            flex: 1; 
-            background: white; 
-            border: 1px solid #BFB7B1; 
-            padding: 1.5rem; 
-            text-align: center; 
-            height: 160px; 
-            display: flex; 
-            flex-direction: column; 
-            justify-content: center; 
-        }
-        .stat-number { font-family: 'Cormorant', serif; font-weight: 700; color: #661515; font-size: 3rem; line-height: 1; margin-bottom: 0.5rem; }
-        .stat-text { font-family: 'Cormorant', serif; font-weight: 700; color: #49454F; font-size: 1rem; text-transform: uppercase; }
-
-        /* 6. FOOTER */
-        .footer-container { background-color: #661515; color: white; padding: 2.5rem 1rem; }
-        .footer-wrapper { 
-            max-width: 1100px; 
-            margin: 0 auto; 
-            display: flex; 
-            justify-content: space-around; 
-            align-items: center; 
-        }
-        .footer-item { display: flex; align-items: center; gap: 0.75rem; }
-        .footer-icon { font-size: 1.5rem; color: #D1A537; }
-        .footer-info-text { font-size: 0.9rem; line-height: 1.4; opacity: 0.9; }
-
-        /* RESPONSIVIDADE PARA TELEMÓVEL */
-        @media (max-width: 640px) {
-            .nav-card { flex: 0 0 100%; }
-            .stats-flex { flex-direction: column; }
-            .footer-wrapper { flex-direction: column; gap: 1.5rem; text-align: center; }
-            .hero-title { font-size: 2.5rem; }
-        }
-    </style>
 </head>
-<body>
+<body class="bg-background font-esteban text-darkText antialiased">
 
-    <header class="hero-container">
-        <div class="hero-bg-wrapper">
-            <img src="Favaios.png" alt="Paisagem de Favaios" class="hero-img">
-            <div class="hero-overlay"></div>
-            <div class="hero-fade-bottom"></div>
+    <!-- ==========================================
+         HERO SECTION (Modular Component)
+         ========================================== -->
+    <header class="relative min-h-screen flex flex-col items-center justify-center text-center px-6 py-20 overflow-hidden">
+        <!-- Background Image with Gradient Overlay -->
+        <div class="absolute inset-0 z-0">
+            <!-- Placeholder for Favaios landscape -->
+            <img src="Favaios.png" alt="Paisagem de Favaios" class="w-full h-full object-cover" />
+
+            <!-- Top dark fade for text readability -->
+            <div class="absolute inset-0 bg-gradient-to-b from-black/90 via-black/50 to-black/10"></div>
+            
+            <!-- Dedicated bottom fade to blend seamlessly into the next section -->
+            <div class="absolute inset-x-0 -bottom-2 h-64 bg-gradient-to-t from-background via-background/90 to-transparent"></div>
         </div>
 
-        <div class="hero-content">
-            <h2 class="hero-subtitle">Arquivo Paroquial 1926-1940</h2>
-            <h1 class="hero-title">Manuscritos de Favaios</h1>
-            <p class="hero-description">
-                Honramos a memória dos que partiram — registos de óbitos da paróquia de Favaios, Alto Douro, documentados entre 1926 e 1940.
+        <!-- Hero Content -->
+        <div class="relative z-10 flex flex-col items-center max-w-5xl mx-auto mt-16">
+            <h2 class="font-playfair font-semibold text-gold text-xl md:text-3xl tracking-[0.06em] mb-4">
+                ARQUIVO PAROQUIAL 1926-1940
+            </h2>
+            <h1 class="font-gloock text-lightText text-5xl md:text-7xl lg:text-[80px] leading-tight mb-8">
+                Manuscritos<br>de Favaios
+            </h1>
+            <p class="font-esteban text-lightText/80 text-xl md:text-3xl max-w-4xl leading-relaxed mb-16">
+                Honramos a memória dos que partiram - registos de óbitos da paróquia de Favaios, Alto Douro, entre 1926 e 1940.
             </p>
 
-            <nav class="nav-grid">
-                <a href="explorar.html" class="nav-card">
-                    <span class="nav-card-text">EXPLORAR REGISTOS</span>
+            <!-- Navigation Grid (Responsive Boxes) -->
+            <nav class="grid grid-cols-1 md:grid-cols-2 gap-6 w-full max-w-4xl">
+                <a href="explorar.html" class="group relative flex items-center justify-center h-[120px] border-2 border-white/80 hover:border-gold hover:bg-white/5 transition-all duration-300">
+                    <span class="font-playfair font-medium text-lightText text-2xl md:text-3xl text-center underline decoration-1 underline-offset-8 group-hover:text-gold transition-colors">EXPLORAR<br>REGISTOS</span>
                 </a>
-                <a href="linhaTemporal.html" class="nav-card">
-                    <span class="nav-card-text">LINHA TEMPORAL</span>
+                <a href="linhaTemporal.html" class="group relative flex items-center justify-center h-[120px] border-2 border-white/80 hover:border-gold hover:bg-white/5 transition-all duration-300">
+                    <span class="font-playfair font-medium text-lightText text-2xl md:text-3xl text-center underline decoration-1 underline-offset-8 group-hover:text-gold transition-colors">LINHA<br>TEMPORAL</span>
                 </a>
-                <a href="contexto.html" class="nav-card">
-                    <span class="nav-card-text">CONTEXTO HISTÓRICO</span>
+                <a href="contexto.html" class="group relative flex items-center justify-center h-[120px] border-2 border-white/80 hover:border-gold hover:bg-white/5 transition-all duration-300">
+                    <span class="font-playfair font-medium text-lightText text-2xl md:text-3xl text-center underline decoration-1 underline-offset-8 group-hover:text-gold transition-colors">CONTEXTO<br>HISTÓRICO</span>
                 </a>
-                <a href="sobre.html" class="nav-card">
-                    <span class="nav-card-text">SOBRE O PROJETO</span>
+                <a href="sobre.html" class="group relative flex items-center justify-center h-[120px] border-2 border-white/80 hover:border-gold hover:bg-white/5 transition-all duration-300">
+                    <span class="font-playfair font-medium text-lightText text-2xl md:text-3xl text-center underline decoration-1 underline-offset-8 group-hover:text-gold transition-colors">SOBRE O<br>PROJETO</span>
                 </a>
             </nav>
         </div>
     </header>
 
-    <section class="stats-section">
-        <div class="stats-header">
-            <h2 class="stats-label">OS NÚMEROS</h2>
-            <h3 class="stats-main-title">Mais de uma década de informação</h3>
+    <!-- ==========================================
+         STATS SECTION (Modular Component)
+         ========================================== -->
+    <!-- The trick: relative z-20 brings it to the front, -mt-4 pulls it up over the hero section, pt-28 restores inner spacing, and bg-background makes it opaque -->
+    <section class="relative z-20 -mt-4 pt-28 pb-24 px-6 max-w-7xl mx-auto bg-background">
+        <div class="text-center mb-16">
+            <h2 class="font-playfair font-medium text-goldDark text-2xl md:text-4xl tracking-[0.15em] mb-4">OS NÚMEROS</h2>
+            <h3 class="font-gloock text-darkText text-4xl md:text-[50px] leading-tight">Mais de uma década<br>de informação</h3>
         </div>
 
-        <div class="stats-flex">
-            <div class="stat-card">
-                <span class="stat-number">14</span>
-                <span class="stat-text">Anos registados</span>
+        <!-- CSS Grid for the 4 Stat Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <!-- Card 1 -->
+            <div class="bg-background border-2 border-cardBorder rounded-md p-10 flex flex-col items-center justify-center text-center h-[280px] shadow-sm hover:shadow-md transition-shadow">
+                <span class="font-cormorant font-bold text-brandRed text-[80px] md:text-[96px] leading-none mb-4" id="stat-anos">14</span>
+                <span class="font-cormorant font-bold text-[#49454F] text-2xl md:text-3xl leading-snug">Anos<br>registados</span>
             </div>
-            <div class="stat-card">
-                <span class="stat-number">566</span>
-                <span class="stat-text">Assentos Totais</span>
+            <!-- Card 2 -->
+            <div class="bg-background border-2 border-cardBorder rounded-md p-10 flex flex-col items-center justify-center text-center h-[280px] shadow-sm hover:shadow-md transition-shadow">
+                <span class="font-cormorant font-bold text-brandRed text-[80px] md:text-[96px] leading-none mb-4" id="stat-assentos">566</span>
+                <span class="font-cormorant font-bold text-[#49454F] text-2xl md:text-3xl leading-snug">Assentos<br>Totais</span>
             </div>
-            <div class="stat-card">
-                <span class="stat-number">200+</span>
-                <span class="stat-text">Famílias</span>
+            <!-- Card 3 -->
+            <div class="bg-background border-2 border-cardBorder rounded-md p-10 flex flex-col items-center justify-center text-center h-[280px] shadow-sm hover:shadow-md transition-shadow">
+                <span class="font-cormorant font-bold text-brandRed text-[80px] md:text-[96px] leading-none mb-4">200+</span>
+                <span class="font-cormorant font-bold text-[#49454F] text-2xl md:text-3xl leading-snug">Apelidos e<br>Famílias</span>
             </div>
-            <div class="stat-card">
-                <span class="stat-number">4</span>
-                <span class="stat-text">Localidades</span>
+            <!-- Card 4 -->
+            <div class="bg-background border-2 border-cardBorder rounded-md p-10 flex flex-col items-center justify-center text-center h-[280px] shadow-sm hover:shadow-md transition-shadow">
+                <span class="font-cormorant font-bold text-brandRed text-[80px] md:text-[96px] leading-none mb-4">4</span>
+                <span class="font-cormorant font-bold text-[#49454F] text-2xl md:text-3xl leading-snug">Localidades<br>diferentes</span>
             </div>
         </div>
     </section>
 
-    <footer class="footer-container">
-        <div class="footer-wrapper">
-            <div class="footer-item">
-                <i class="ph ph-map-pin footer-icon"></i>
-                <p class="footer-info-text">
-                    Universidade do Minho,<br>Campus de Gualtar, Braga
-                </p>
+    <!-- ==========================================
+         FOOTER (Modular Component)
+         ========================================== -->
+    <footer id="sobre" class="bg-brandRed text-white py-16 px-6 relative">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-start md:items-center gap-10">
+            <!-- Brand / Location -->
+            <div class="flex flex-col gap-6 max-w-lg">
+                <div class="flex items-start gap-4">
+                    <i class="ph ph-map-pin text-4xl text-gold mt-1"></i>
+                    <p class="font-esteban text-xl md:text-2xl tracking-widest leading-relaxed">
+                        Universidade do Minho,<br>Campus de Gualtar,<br>4710-057 Braga
+                    </p>
+                </div>
             </div>
-            <div class="footer-item">
-                <i class="ph ph-envelope-simple footer-icon"></i>
-                <p class="footer-info-text">
-                    pedagogico@elach.uminho.pt<br>
-                    +351 253 604 173
-                </p>
+
+            <!-- Contact -->
+            <div class="flex flex-col gap-6 max-w-lg">
+                <div class="flex items-start gap-4">
+                    <i class="ph ph-info text-4xl text-gold mt-1"></i>
+                    <p class="font-esteban text-xl md:text-2xl tracking-widest leading-relaxed">
+                        Telefone: +351 253 604 173<br>
+                        E-mail: pedagogico@elach.uminho.pt
+                    </p>
+                </div>
             </div>
         </div>
     </footer>
