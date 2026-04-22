@@ -461,62 +461,54 @@
         function aplicarTransformacao(imagem) {
             imagem.style.transform = `translate(${pontoX}px, ${pontoY}px) scale(${escalaZoom})`;
         }
+
+// O motor deve ser ativado assim que a página carregar
+        document.addEventListener('DOMContentLoaded', ativarZoomManual);
+
         
-        // NOVO CÓDIGO: INTERATIVIDADE SEMÂNTICA XSLT
-        // ==========================================
-        function configurarInteratividadeTextual() {
-            const menuDestaques = document.getElementById('menu-destaques');
-            
-            if (!menuDestaques) return;
+        // 4. Motor de Transformação XSLT (Método 2)
+        async function carregarRegistoDiplomatico(recordData) {
+            try {
+                // Revela a secção do visualizador documental criada anteriormente
+                const visualizador = document.getElementById('visualizador-documental');
+                if (visualizador) visualizador.classList.remove('hidden');
 
-            menuDestaques.addEventListener('change', function(evento) {
-                const classeAlvo = evento.target.value; 
-                
-                // 1. Limpar todos os destaques ativos
-                const todasSpans = document.querySelectorAll('.termo-anotado');
-                todasSpans.forEach(span => {
-                    span.classList.remove('bg-yellow-200', 'bg-blue-200', 'bg-green-200', 'bg-red-200', 'bg-purple-200');
-                });
+                const areaTranscricao = document.getElementById("area-transcricao");
+                areaTranscricao.innerHTML = '<div class="flex h-full items-center justify-center opacity-50"><i class="ph ph-spinner-gap animate-spin text-4xl mr-2"></i> A carregar transcrição estruturada...</div>';
 
-                if (classeAlvo === "none") return;
+                // Busca o ficheiro XML da pasta public do repositório
+                const respostaXML = await fetch('public/template-assento.xml');
+                if (!respostaXML.ok) throw new Error("XML não encontrado.");
+                const textoXML = await respostaXML.text();
+                const xml = new DOMParser().parseFromString(textoXML, "text/xml");
 
-                // 2. Aplicar o destaque à classe gerada pelo XSLT
-                const elementosParaDestacar = document.querySelectorAll('.' + classeAlvo);
-                
-                elementosParaDestacar.forEach(elemento => {
-                    switch(classeAlvo) {
-                        case 'death':
-                            elemento.classList.add('bg-yellow-200'); 
-                            break;
-                        case 'persName':
-                            elemento.classList.add('bg-blue-200'); 
-                            break;
-                        case 'placeName':
-                            elemento.classList.add('bg-green-200'); 
-                            break;
-                        case 'sacraments':
-                            elemento.classList.add('bg-purple-200'); 
-                            break;
-                        default:
-                            elemento.classList.add('bg-red-200'); 
-                    }
-                });
-            });
+                // Busca a folha XSLT da pasta public (que deverá ser adicionada ao repositório)
+                const respostaXSLT = await fetch('public/transformacao-assento.xsl');
+                if (!respostaXSLT.ok) throw new Error("XSLT não encontrado.");
+                const textoXSLT = await respostaXSLT.text();
+                const xslt = new DOMParser().parseFromString(textoXSLT, "text/xml");
+
+                // Executa a transformação XSLT nativa no browser
+                const processador = new XSLTProcessor();
+                processador.importStylesheet(xslt);
+                const fragmentoHTML = processador.transformToFragment(xml, document);
+
+                // Injeta o HTML processado no palco
+                areaTranscricao.innerHTML = ''; 
+                areaTranscricao.appendChild(fragmentoHTML);
+
+                // Opcional: Rola a página suavemente até à transcrição para guiar o olhar do utilizador
+                visualizador.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+            } catch (erro) {
+                console.error("Erro no processamento XSLT:", erro);
+                document.getElementById("area-transcricao").innerHTML = 
+                    `<p class="text-brandRed p-4">Erro ao processar a anotação diplomática. Verifique se os ficheiros existem na pasta public.</p>`;
+            }
         }
 
-        // ==========================================
-        // INICIALIZAÇÃO DO SISTEMA
-        // ==========================================
-        
-        // Garante que os motores de interface arrancam assim que o HTML carregar
-        document.addEventListener('DOMContentLoaded', () => {
-            ativarZoomManual(); // O seu motor de zoom da imagem
-            configurarInteratividadeTextual(); // O novo motor de destaque de texto
-        });
-
-        // Arranca a leitura e processamento dos ficheiros XML (função que já possuía)
+        // Run when page loads
         window.onload = initPage;
-
     </script>
 </body>
 </html>
