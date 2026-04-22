@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Linha Temporal - Óbitos em Favaios</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Esteban&family=Gloock&family=Cormorant:wght@700&display=swap" rel="stylesheet">
+    
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+    <script src="https://cdn.jsdelivr.net/npm/react-apexcharts"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <style>
+        :root {
+            --bg-color: #F8F6F2;
+            --nav-bg: #F4F0EA;
+            --text-dark: #383838;
+            --accent-red: #661515;
+            --border-color: #DCD6CD;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            margin: 0;
+            font-family: 'Esteban', serif;
+            color: var(--text-dark);
+        }
+
+        /* --- NAVEGAÇÃO --- */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.0rem 5%;
+            background: var(--nav-bg);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .nav-logo-area { display: flex; align-items: center; gap: 10px; }
+        .nav-logo-area img { width: 30px; height: auto; }
+        .nav-title { font-family: 'Gloock', serif; font-size: 1rem; }
+
+        .nav-links { display: flex; list-style: none; gap: 25px; margin: 0; }
+        .nav-links a { text-decoration: none; color: #7D736D; font-family: 'Gloock', serif; font-size: 1.0rem; }
+
+        /* --- CONTEÚDO DO GRÁFICO DE BARRAS --- */
+        .chart-container {
+            max-width: 1400px;
+            margin: 40px auto;
+            padding: 0 5%;
+            text-align: center;
+        }
+
+        .chart-header h1 { font-family: 'Gloock', serif; font-size: 1.5rem; margin-bottom: 10px; }
+        .summary { font-size: 1.0rem; color: rgba(51, 1, 71, 0.8); margin-bottom: 40px; }
+
+        .chart-wrapper {
+            overflow-x: auto;
+            padding-bottom: 10px;
+            margin: 50px 0;
+        }
+
+        .bar-chart {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            min-width: 1100px;
+            height: 360px;
+            border-bottom: 4px solid var(--border-color);
+            gap: 10px;
+            padding-bottom: 15px;
+        }
+
+        .bar-group { display: flex; flex-direction: column; align-items: center; flex: 1; }
+        .bar-value { font-size: 0.9rem; margin-bottom: 8px; color: #474747; }
+        .bar { 
+            width: 35px; 
+            height: var(--h); 
+            background-color: rgba(102, 21, 21, var(--o)); 
+            border-radius: 4px 4px 0 0;
+            transition: transform 0.2s;
+        }
+        .bar:hover { transform: scaleY(1.05); }
+        .bar-dot { width: 10px; height: 10px; background: var(--accent-red); border-radius: 50%; margin: 10px 0; }
+        .bar-year { font-family: 'Cormorant', serif; font-weight: 700; font-size: 1.1rem; color: var(--accent-red); }
+
+        .chart-note {
+            max-width: 900px;
+            margin: 40px auto;
+            font-size: 1.1rem;
+            line-height: 1.1;
+        }
+
+        /* --- SECÇÃO APEXCHARTS (REACT) --- */
+        .react-section {
+            background: white;
+            padding: 60px 5%;
+            border-top: 1px solid var(--border-color);
+        }
+        #app { max-width: 1000px; margin: 0 auto; }
+
+        /* --- RODAPÉ --- */
+        .main-footer {
+            background: var(--accent-red);
+            color: white;
+            padding: 50px 5%;
+            font-size: 1.2rem;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            letter-spacing: 2px;
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="nav-logo-area">
+            <img src="https://placehold.co/61x74" alt="Logo">
+            <span class="nav-title">Linha Temporal</span>
+        </div>
+        <ul class="nav-links">
+            <li><a href="#">Página Inicial</a></li>
+            <li><a href="#">Explorar Registos</a></li>
+            <li><a href="#">Sobre o Projeto</a></li>
+            <li><a href="#">Contexto Histórico</a></li>
+        </ul>
+    </nav>
+
+    <main class="chart-container">
+        <header class="chart-header">
+            <h1>Assentos de Óbito por Ano</h1>
+            <p class="summary">Um total de <strong>566</strong> assentos registados ao longo de 15 anos.</p>
+        </header>
+
+        <div class="chart-wrapper">
+            <div class="bar-chart">
+                <div class="bar-group"><span class="bar-value">13</span><div class="bar" style="--h: 65px; --o: 0.16;"></div><div class="bar-dot"></div><span class="bar-year">1926</span></div>
+                <div class="bar-group"><span class="bar-value">39</span><div class="bar" style="--h: 195px; --o: 0.60;"></div><div class="bar-dot"></div><span class="bar-year">1927</span></div>
+                <div class="bar-group"><span class="bar-value">50</span><div class="bar" style="--h: 250px; --o: 0.85;"></div><div class="bar-dot"></div><span class="bar-year">1928</span></div>
+                <div class="bar-group"><span class="bar-value">46</span><div class="bar" style="--h: 230px; --o: 0.75;"></div><div class="bar-dot"></div><span class="bar-year">1929</span></div>
+                <div class="bar-group"><span class="bar-value">44</span><div class="bar" style="--h: 220px; --o: 0.75;"></div><div class="bar-dot"></div><span class="bar-year">1930</span></div>
+                <div class="bar-group"><span class="bar-value">32</span><div class="bar" style="--h: 160px; --o: 0.57;"></div><div class="bar-dot"></div><span class="bar-year">1931</span></div>
+                <div class="bar-group"><span class="bar-value">36</span><div class="bar" style="--h: 180px; --o: 0.60;"></div><div class="bar-dot"></div><span class="bar-year">1932</span></div>
+                <div class="bar-group"><span class="bar-value">54</span><div class="bar" style="--h: 270px; --o: 0.85;"></div><div class="bar-dot"></div><span class="bar-year">1933</span></div>
+                <div class="bar-group"><span class="bar-value">44</span><div class="bar" style="--h: 220px; --o: 0.75;"></div><div class="bar-dot"></div><span class="bar-year">1934</span></div>
+                <div class="bar-group"><span class="bar-value">35</span><div class="bar" style="--h: 175px; --o: 0.57;"></div><div class="bar-dot"></div><span class="bar-year">1935</span></div>
+                <div class="bar-group"><span class="bar-value">28</span><div class="bar" style="--h: 140px; --o: 0.48;"></div><div class="bar-dot"></div><span class="bar-year">1936</span></div>
+                <div class="bar-group"><span class="bar-value">44</span><div class="bar" style="--h: 220px; --o: 0.75;"></div><div class="bar-dot"></div><span class="bar-year">1937</span></div>
+                <div class="bar-group"><span class="bar-value">26</span><div class="bar" style="--h: 130px; --o: 0.48;"></div><div class="bar-dot"></div><span class="bar-year">1938</span></div>
+                <div class="bar-group"><span class="bar-value">33</span><div class="bar" style="--h: 165px; --o: 0.53;"></div><div class="bar-dot"></div><span class="bar-year">1939</span></div>
+                <div class="bar-group"><span class="bar-value">42</span><div class="bar" style="--h: 210px; --o: 0.66;"></div><div class="bar-dot"></div><span class="bar-year">1940</span></div>
+            </div>
+        </div>
+
+        <div class="chart-note">
+            O manuscrito a que tivemos acesso apenas contém registos parciais do ano de 1926, então o valor de 13 óbitos é o mínimo possível.
+        </div>
+    </main>
+
+    <section class="react-section">
+        <h2 style="text-align: center; font-family: Gloock;">Cronologia de Desenvolvimento</h2>
+        <div id="app"></div>
+    </section>
+
+    <footer class="main-footer">
+        <div class="footer-content">
+            <div>Universidade do Minho, Campus de Gualtar, 4710-057 Braga</div>
+            <div>Telefone: +351 253 604 173</div>
+            <div>E-mail: pedagogico@elach.uminho.pt</div>
+        </div>
+    </footer>
+
+    <script type="text/babel">
+        const ReactApexChart = window.ReactApexChart;
+
+        const ApexChart = () => {
+            const [state] = React.useState({
+                series: [{
+                    data: [
+                        { x: 'Code', y: [new Date('2019-03-02').getTime(), new Date('2019-03-04').getTime()] },
+                        { x: 'Test', y: [new Date('2019-03-04').getTime(), new Date('2019-03-08').getTime()] },
+                        { x: 'Validation', y: [new Date('2019-03-08').getTime(), new Date('2019-03-12').getTime()] },
+                        { x: 'Deployment', y: [new Date('2019-03-12').getTime(), new Date('2019-03-18').getTime()] }
+                    ]
+                }],
+                options: {
+                    chart: { height: 350, type: 'rangeBar', toolbar: { show: false } },
+                    plotOptions: { bar: { horizontal: true } },
+                    xaxis: { type: 'datetime' },
+                    colors: ['#661515']
+                }
+            });
+
+            return <ReactApexChart options={state.options} series={state.series} type="rangeBar" height={350} />;
+        }
+
+        const root = ReactDOM.createRoot(document.getElementById('app'));
+        root.render(<ApexChart />);
+    </script>
+</body>
+</html>
