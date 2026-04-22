@@ -3,20 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Arquivo Paroquial - Manuscritos de Favaios</title>
-    
+    <title>Módulo de Cartões - Tailwind (Sem JS)</title>
+
     <!-- Tailwind CSS (Modular Styling Framework) -->
     <script src="https://cdn.tailwindcss.com"></script>
-    
-    <!-- Google Fonts imported from your Figma design -->
+
+    <!-- Google Fonts importadas do teu design Figma -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cormorant:wght@700&family=Esteban&family=Gloock&family=Playfair+Display:wght@500;600&display=swap" rel="stylesheet">
-    
-    <!-- Phosphor Icons for the Footer -->
-    <script src="https://unpkg.com/@phosphor-icons/web"></script>
 
-    <!-- Custom Tailwind Configuration to match your exact Figma Colors and Fonts -->
+    <!-- Configuração Customizada do Tailwind para igualar o teu protótipo -->
     <script>
         tailwind.config = {
             theme: {
@@ -24,12 +21,11 @@
                     colors: {
                         background: '#F8F6F2',
                         gold: '#D1A537',
-                        goldDark: '#BF984B',
                         lightText: '#EBE2DB',
                         darkText: '#2D2724',
-                        cardBorder: '#BFB7B1',
                         brandRed: '#661515',
-                        brandRedDark: '#4a0f0f'
+                        brandRedDark: '#4a0f0f',
+                        cardShadow: 'rgba(42, 7, 7, 0.5)'
                     },
                     fontFamily: {
                         playfair: ['"Playfair Display"', 'serif'],
@@ -42,58 +38,74 @@
         }
     </script>
 </head>
-<body class="bg-background font-esteban text-darkText antialiased">
+<!-- O body agora é relative para que a imagem possa estender-se por toda a sua altura -->
+<body class="bg-background font-esteban text-darkText antialiased flex flex-col min-h-screen relative">
 
     <!-- ==========================================
-         HERO SECTION (Modular Component)
+         FUNDO GLOBAL (Agora aplica-se a toda a página e não apenas ao Header)
          ========================================== -->
-    <header class="relative min-h-screen flex flex-col items-center justify-center text-center px-6 py-20 overflow-hidden">
-        <!-- Background Image with Gradient Overlay -->
-        <div class="absolute inset-0 z-0">
-            <!-- Placeholder for Favaios landscape -->
-            <img src="Favaios.png" alt="Paisagem de Favaios" class="w-full h-full object-cover" />
+    <!-- O z-0 coloca isto no fundo absoluto. O inset-0 estica-o para os limites da página inteira. -->
+    <div class="absolute inset-0 z-0" style="-webkit-mask-image: linear-gradient(to bottom, black 90%, transparent 100%); mask-image: linear-gradient(to bottom, black 90%, transparent 100%);">
+        
+        <img src="Favaios.png" alt="Paisagem de Favaios" class="w-full h-full object-cover" />
+        
+        <!-- Gradiente contínuo para escurecer a imagem e manter as letras brancas legíveis -->
+        <div class="absolute inset-0 bg-gradient-to-b from-[#221308]/90 via-[#221308]/60 to-[#221308]/20"></div>
+        
+    </div>
 
-            <!-- Top dark fade for text readability -->
-            <div class="absolute inset-0 bg-gradient-to-b from-black/90 via-black/50 to-black/10"></div>
-            
-            <!-- Dedicated bottom fade to blend seamlessly into the next section -->
-            <div class="absolute inset-x-0 -bottom-2 h-64 bg-gradient-to-t from-background via-background/90 to-transparent"></div>
-        </div>
-
-        <!-- Hero Content -->
-        <div class="relative z-10 flex flex-col items-center max-w-5xl mx-auto mt-16">
-            <h2 class="font-playfair font-semibold text-gold text-xl md:text-3xl tracking-[0.06em] mb-4">
-                ARQUIVO PAROQUIAL 1926-1940
+    <!-- ==========================================
+         HERO SECTION (Cabeçalho Modular)
+         ========================================== -->
+    <!-- Retirámos o overflow-hidden e o background. Ele agora foca-se apenas no texto (z-10) -->
+    <header class="relative z-10 min-h-[60vh] flex flex-col items-center justify-center text-center px-6 py-20">
+        
+        <div class="flex flex-col items-center">
+            <h2 class="font-playfair font-semibold text-gold text-xl md:text-2xl tracking-widest uppercase mb-4">
+                Arquivo Paroquial 1926-1940
             </h2>
-            <h1 class="font-gloock text-lightText text-5xl md:text-7xl lg:text-[80px] leading-tight mb-8">
+            <h1 class="font-gloock text-lightText text-5xl md:text-7xl lg:text-[80px] leading-tight mb-6">
                 Manuscritos<br>de Favaios
             </h1>
-            <p class="font-esteban text-lightText/80 text-xl md:text-3xl max-w-4xl leading-relaxed mb-16">
+            <p class="font-esteban text-lightText/80 text-lg md:text-2xl max-w-3xl leading-relaxed">
                 Honramos a memória dos que partiram - registos de óbitos da paróquia de Favaios, Alto Douro, entre 1926 e 1940.
             </p>
-
-            <!-- Navigation Grid (Responsive Boxes) -->
-            <nav class="grid grid-cols-1 md:grid-cols-2 gap-6 w-full max-w-4xl">
-                <a href="explorar.html" class="group relative flex items-center justify-center h-[120px] border-2 border-white/80 hover:border-gold hover:bg-white/5 transition-all duration-300">
-                    <span class="font-playfair font-medium text-lightText text-2xl md:text-3xl text-center underline decoration-1 underline-offset-8 group-hover:text-gold transition-colors">EXPLORAR<br>REGISTOS</span>
-                </a>
-                <a href="linhaTemporal.html" class="group relative flex items-center justify-center h-[120px] border-2 border-white/80 hover:border-gold hover:bg-white/5 transition-all duration-300">
-                    <span class="font-playfair font-medium text-lightText text-2xl md:text-3xl text-center underline decoration-1 underline-offset-8 group-hover:text-gold transition-colors">LINHA<br>TEMPORAL</span>
-                </a>
-                <a href="contexto.html" class="group relative flex items-center justify-center h-[120px] border-2 border-white/80 hover:border-gold hover:bg-white/5 transition-all duration-300">
-                    <span class="font-playfair font-medium text-lightText text-2xl md:text-3xl text-center underline decoration-1 underline-offset-8 group-hover:text-gold transition-colors">CONTEXTO<br>HISTÓRICO</span>
-                </a>
-                <a href="sobre.html" class="group relative flex items-center justify-center h-[120px] border-2 border-white/80 hover:border-gold hover:bg-white/5 transition-all duration-300">
-                    <span class="font-playfair font-medium text-lightText text-2xl md:text-3xl text-center underline decoration-1 underline-offset-8 group-hover:text-gold transition-colors">SOBRE O<br>PROJETO</span>
-                </a>
-            </nav>
         </div>
     </header>
 
     <!-- ==========================================
-         FOOTER (Modular Component)
+         MÓDULOS DE EXPLORAÇÃO (Zero JS, 100% Tailwind)
          ========================================== -->
-    <footer id="sobre" class="bg-brandRed text-white py-16 px-6 relative">
+    <!-- Margem negativa (-mt-24) para sobrepor visualmente o hero section -->
+    <section class="relative z-20 px-6 max-w-7xl mx-auto w-full -mt-12 mb-20" aria-label="Navegação Principal">
+        
+        <!-- Grelha CSS Responsiva: 1 coluna no telemóvel, 2 no tablet, 4 no PC -->
+        <nav class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+
+            <!-- CARTÃO 1: Utilizamos <a> em vez de <div> para criar navegação nativa -->
+            <a href="explorar.html" class="group bg-brandRed text-white p-10 rounded-lg shadow-[0_8px_20px_rgba(42,7,7,0.5)] hover:shadow-[0_12px_25px_rgba(0,0,0,0.6)] hover:-translate-y-2 hover:bg-brandRedDark transition-all duration-300 flex flex-col justify-center items-center text-center min-h-[220px] focus:outline-none focus:ring-4 focus:ring-gold">
+                <h3 class="font-cormorant font-bold text-3xl uppercase leading-snug mb-3 group-hover:text-gold transition-colors">Explorar<br>Registos</h3>
+            </a>
+
+            <!-- CARTÃO 2 -->
+            <a href="linhaTemporal.html" class="group bg-brandRed text-white p-10 rounded-lg shadow-[0_8px_20px_rgba(42,7,7,0.5)] hover:shadow-[0_12px_25px_rgba(0,0,0,0.6)] hover:-translate-y-2 hover:bg-brandRedDark transition-all duration-300 flex flex-col justify-center items-center text-center min-h-[220px] focus:outline-none focus:ring-4 focus:ring-gold">
+                <h3 class="font-cormorant font-bold text-3xl uppercase leading-snug mb-3 group-hover:text-gold transition-colors">Linha<br>Temporal</h3>
+            </a>
+
+            <!-- CARTÃO 3 -->
+            <a href="contexto.html" class="group bg-brandRed text-white p-10 rounded-lg shadow-[0_8px_20px_rgba(42,7,7,0.5)] hover:shadow-[0_12px_25px_rgba(0,0,0,0.6)] hover:-translate-y-2 hover:bg-brandRedDark transition-all duration-300 flex flex-col justify-center items-center text-center min-h-[220px] focus:outline-none focus:ring-4 focus:ring-gold">
+                <h3 class="font-cormorant font-bold text-3xl uppercase leading-snug mb-3 group-hover:text-gold transition-colors">Contexto<br>Histórico</h3>
+            </a>
+
+            <!-- CARTÃO 4 -->
+            <a href="sobre.html" class="group bg-brandRed text-white p-10 rounded-lg shadow-[0_8px_20px_rgba(42,7,7,0.5)] hover:shadow-[0_12px_25px_rgba(0,0,0,0.6)] hover:-translate-y-2 hover:bg-brandRedDark transition-all duration-300 flex flex-col justify-center items-center text-center min-h-[220px] focus:outline-none focus:ring-4 focus:ring-gold">
+                <h3 class="font-cormorant font-bold text-3xl uppercase leading-snug mb-3 group-hover:text-gold transition-colors">Sobre o<br>Projeto</h3>
+            </a>
+
+        </nav>
+    </section>
+ 
+    <footer id="sobre" class=" text-white py-16 px-6 relative">
         <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-start md:items-center gap-10">
             <!-- Brand / Location -->
             <div class="flex flex-col gap-6 max-w-lg">
@@ -118,5 +130,7 @@
         </div>
     </footer>
     
+
+
 </body>
 </html>
