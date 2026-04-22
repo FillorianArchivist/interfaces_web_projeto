@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sobre o Projeto - Manuscritos de Favaios</title>
+    
+    <!-- Importação de Fontes baseadas no teu protótipo -->
+    <link href="https://fonts.googleapis.com/css2?family=Esteban&family=Gloock&family=Playfair+Display:wght@500&display=swap" rel="stylesheet">
+
+    <style>
+        /* ==========================================================================
+           1. RESET E VARIÁVEIS (CSS Moderno - Aula T2)
+           ========================================================================== */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --cor-fundo-main: #F8F6F2;
+            --cor-fundo-nav: #F4F0EA;
+            --cor-borda-nav: #DCD6CD;
+            --cor-texto-nav: #7D736D;
+            --cor-texto-ativo: #383838;
+            --cor-dourado: #BF984B;
+            --cor-titulo: #2D2724;
+            --cor-texto-base: #7D736D;
+        }
+
+        body {
+            font-family: 'Esteban', serif;
+            background-color: var(--cor-fundo-main);
+            color: var(--cor-texto-base);
+            line-height: 1.6;
+            /* Permite que a página ocupe sempre pelo menos a altura do ecrã */
+            min-height: 100vh; 
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* ==========================================================================
+           2. CABEÇALHO E NAVEGAÇÃO (Semântica)
+           ========================================================================== */
+        header {
+            background-color: var(--cor-fundo-nav);
+            border-bottom: 3px solid var(--cor-borda-nav);
+            box-shadow: 0px 4px 13px rgba(0, 0, 0, 0.05); /* Sombra mais suave que a original */
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .navbar {
+            max-width: 1800px;
+            margin: 0 auto;
+            padding: 15px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap; /* Permite que o menu desça em ecrãs pequenos */
+            gap: 20px;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .logo-img {
+            width: 60px;
+            height: 72px;
+            object-fit: contain;
+        }
+
+        .logo-texto {
+            font-family: 'Gloock', serif;
+            font-size: clamp(1.5rem, 3vw, 2.5rem); /* Tamanho responsivo */
+            color: var(--cor-texto-ativo);
+            letter-spacing: 2px;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--cor-texto-nav);
+            font-family: 'Gloock', serif;
+            font-size: 1.2rem;
+            letter-spacing: 1px;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover, 
+        .nav-links a.active {
+            color: var(--cor-texto-ativo);
+        }
+
+        /* ==========================================================================
+           3. CONTEÚDO PRINCIPAL (Layout Grid)
+           ========================================================================== */
+        main {
+            flex-grow: 1; /* Faz o main ocupar o espaço restante da página */
+            padding: 60px 5%;
+        }
+
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+
+        /* CSS Grid para estruturar Imagem - Texto - Imagem */
+        .sobre-grid {
+            display: grid;
+            grid-template-columns: 1fr; /* Default para telemóveis: 1 coluna */
+            gap: 50px;
+            align-items: center;
+        }
+
+        /* A partir de tablets/desktops, passamos a 3 colunas */
+        @media (min-width: 1024px) {
+            .sobre-grid {
+                /* A coluna do meio (texto) é ligeiramente maior que as imagens laterais */
+                grid-template-columns: 1fr 1.5fr 1fr; 
+            }
+        }
+
+        /* Imagens Laterais */
+        .img-lateral {
+            width: 100%;
+            height: auto;
+            border-radius: 4px;
+            object-fit: cover;
+            box-shadow: 0px 10px 20px rgba(0,0,0,0.1);
+        }
+
+        /* Bloco de Texto Central */
+        .texto-central {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            text-align: justify;
+        }
+
+        .pre-titulo {
+            font-family: 'Playfair Display', serif;
+            color: var(--cor-dourado);
+            font-size: 1.2rem;
+            font-weight: 500;
+            letter-spacing: 4px;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            text-align: center;
+        }
+
+        .titulo-principal {
+            font-family: 'Gloock', serif;
+            color: var(--cor-titulo);
+            font-size: clamp(2.5rem, 4vw, 4rem);
+            line-height: 1.2;
+            margin-bottom: 40px;
+            text-align: center;
+        }
+
+        .texto-central p {
+            font-size: 1.2rem;
+            line-height: 1.8;
+            margin-bottom: 20px;
+            color: var(--cor-texto-nav);
+        }
+
+        /* Destalhes do texto pedido no Figma */
+        .texto-destaque {
+            color: var(--cor-texto-ativo);
+        }
+
+        .texto-sublinhado {
+            text-decoration: underline;
+        }
+
+        /* ==========================================================================
+           4. MENU MOBILE (UI Dinâmica)
+           ========================================================================== */
+        .btn-mobile {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 2rem;
+            cursor: pointer;
+            color: var(--cor-texto-ativo);
+        }
+
+        @media (max-width: 768px) {
+            .btn-mobile {
+                display: block;
+            }
+            .nav-links {
+                display: none; /* Escondido por defeito em mobile */
+                width: 100%;
+                flex-direction: column;
+                align-items: center;
+                gap: 15px;
+                padding-top: 20px;
+            }
+            .nav-links.ativa {
+                display: flex;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- CABEÇALHO SEMÂNTICO (Reconstruído a partir do design do Figma) -->
+    <header>
+        <nav class="navbar">
+            <div class="logo-container">
+                <img src="https://placehold.co/60x72" alt="Logo HD" class="logo-img">
+                <h1 class="logo-texto">Sobre o Projeto</h1>
+            </div>
+            
+            <!-- Botão Hambúrguer para Mobile -->
+            <button class="btn-mobile" id="btnMenu" aria-label="Abrir menu">☰</button>
+
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#">Página Inicial</a></li>
+                <li><a href="#">Explorar Registos</a></li>
+                <li><a href="#">Contexto Histórico</a></li>
+                <li><a href="#">Linha Temporal</a></li>
+                <li><a href="#" class="active">Sobre o Projeto</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- CONTEÚDO PRINCIPAL (Grid Imagem-Texto-Imagem) -->
+    <main>
+        <section class="container sobre-grid">
+            
+            <!-- Imagem Esquerda -->
+            <div>
+                <!-- Utilizamos loading="lazy" para melhor performance Jamstack -->
+                <img src="https://placehold.co/708x1064" alt="Manuscrito Parte 1" class="img-lateral" loading="lazy">
+            </div>
+
+            <!-- Texto Central -->
+            <article class="texto-central">
+                <h2 class="pre-titulo">HUMANIDADES DIGITAIS · UNIVERSIDADE DO MINHO</h2>
+                <h3 class="titulo-principal">Honrar os que<br>já partiram</h3>
+                
+                <p>
+                    Como estudantes do mestrado de Humanidades Digitais da Universidade do Minho, desenvolvemos esta página web no âmbito da Unidade Curricular de Interfaces Web em colaboração com a Unidade Curricular de Edição de Património Textual, onde tivemos a oportunidade de trabalhar com manuscritos referentes ao registo de óbitos em Favaios dos anos de 1926 a 1940.
+                </p>
+                
+                <p>
+                    Dessas transcrições dos manuscritos em aula surgiu o 
+                    <span class="texto-destaque">‘</span><span class="texto-destaque texto-sublinhado">Livro do Registo Paroquial de óbitos da Freguesia de Favaios</span><span class="texto-destaque">’</span>, 
+                    uma edição semidiplomática do manuscrito da Paróquia de Favaios escrita em colaboração com a docente da cadeira e toda a turma do mestrado.
+                </p>
+                
+                <p>
+                    A proposta do projeto é incorporar num só website toda a informação que considerámos relevante, criando uma base de dados que apresente a informação de forma clara, acessível e respeitosa.
+                </p>
+            </article>
+
+            <!-- Imagem Direita -->
+            <div>
+                <img src="https://placehold.co/709x1063" alt="Manuscrito Parte 2" class="img-lateral" loading="lazy">
+            </div>
+
+        </section>
+    </main>
+
+    <!-- SCRIPT (Interatividade Simples) -->
+    <script>
+        // DOMContentLoaded garante que o script corre após o HTML carregar
+        document.addEventListener('DOMContentLoaded', () => {
+            
+            // UTILIZAÇÃO DE CONST: Protege a referência aos elementos (Boas práticas T2)
+            const btnMenu = document.getElementById('btnMenu');
+            const navLinks = document.getElementById('navLinks');
+
+            // Validação de segurança básica
+            if (btnMenu && navLinks) {
+                btnMenu.addEventListener('click', () => {
+                    // Alterna a classe 'ativa' para mostrar/esconder o menu no telemóvel
+                    navLinks.classList.toggle('ativa');
+                });
+            }
+            
+        });
+    </script>
+</body>
+</html>
