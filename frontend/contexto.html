@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contexto Histórico - Manuscritos de Favaios</title>
+    
+    <!-- Importação de Fontes baseadas no teu protótipo -->
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant:wght@700&family=Esteban&family=Gloock&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* ==========================================================================
+           1. RESET E VARIÁVEIS (Mobile First)
+           ========================================================================== */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --cor-fundo-main: #F8F6F2;
+            --cor-fundo-nav: #F4F0EA;
+            --cor-borda: #BFB7B1;
+            --cor-texto-nav: #7D736D;
+            --cor-texto-ativo: #383838;
+            --cor-dourado: #BF984B;
+            --cor-titulo: #383838;
+            --cor-texto-base: #686868;
+            --cor-destaque-vermelho: #661515;
+        }
+
+        body {
+            font-family: 'Esteban', serif;
+            background-color: var(--cor-fundo-main);
+            color: var(--cor-texto-base);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+        }
+
+        /* ==========================================================================
+           2. NAVEGAÇÃO
+           ========================================================================== */
+        header {
+            background-color: var(--cor-fundo-nav);
+            border-bottom: 3px solid #DCD6CD;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .navbar {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 15px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .logo-texto {
+            font-family: 'Gloock', serif;
+            font-size: clamp(1.5rem, 3vw, 2.5rem);
+            color: var(--cor-texto-ativo);
+            letter-spacing: 2px;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--cor-texto-nav);
+            font-family: 'Gloock', serif;
+            font-size: 1.2rem;
+            letter-spacing: 1px;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover, 
+        .nav-links a.active {
+            color: var(--cor-texto-ativo);
+        }
+
+        /* Botão Mobile */
+        .btn-mobile {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 2rem;
+            cursor: pointer;
+            color: var(--cor-texto-ativo);
+        }
+
+        @media (max-width: 900px) {
+            .btn-mobile { display: block; }
+            .nav-links {
+                display: none;
+                width: 100%;
+                flex-direction: column;
+                align-items: center;
+                gap: 15px;
+                padding-top: 20px;
+            }
+            .nav-links.ativa { display: flex; }
+        }
+
+        /* ==========================================================================
+           3. CABEÇALHO HERO (Com imagem de fundo)
+           ========================================================================== */
+        .hero-contexto {
+            background: linear-gradient(rgba(248, 246, 242, 0.85), rgba(248, 246, 242, 0.95)), url('https://placehold.co/1920x1080') center/cover;
+            padding: 100px 5%;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .hero-titulo {
+            font-family: 'Gloock', serif;
+            font-size: clamp(3rem, 6vw, 4rem);
+            color: var(--cor-titulo);
+            margin-bottom: 30px;
+        }
+
+        .hero-titulo span {
+            font-family: 'Playfair Display', serif;
+            color: var(--cor-dourado);
+            font-weight: 700;
+        }
+
+        .hero-descricao {
+            max-width: 900px;
+            font-size: clamp(1.2rem, 2vw, 1.8rem);
+            color: #474747;
+            line-height: 1.8;
+        }
+
+        /* ==========================================================================
+           4. SECÇÃO TEMÁTICA (Cards com CSS Grid e Ícones Vetoriais)
+           ========================================================================== */
+        .temas-section {
+            padding: 80px 5%;
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+
+        .grid-temas {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 40px;
+        }
+
+        .card-tema {
+            background-color: var(--cor-fundo-main);
+            border: 2px solid var(--cor-borda);
+            border-radius: 5px;
+            box-shadow: 0px 4px 13px rgba(0, 0, 0, 0.1);
+            padding: 40px 30px;
+            display: flex;
+            flex-direction: column;
+            text-align: justify;
+            transition: transform 0.3s ease;
+        }
+
+        .card-tema:hover {
+            transform: translateY(-5px);
+            box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Estrutura do cabeçalho de cada cartão (Ícone + Título) */
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 25px;
+            justify-content: center; /* Centraliza o conjunto de ícone + texto */
+        }
+
+        .card-header svg {
+            width: 48px;
+            height: 48px;
+            flex-shrink: 0; /* Impede que o ícone fique espalmado se o título for grande */
+        }
+
+        .card-tema h3 {
+            font-family: 'Cormorant', serif;
+            font-size: 2.3rem;
+            color: var(--cor-titulo);
+            line-height: 1.1;
+        }
+
+        .card-tema p {
+            font-size: 1.2rem;
+            line-height: 1.6;
+        }
+
+        /* ==========================================================================
+           5. LINHA DO TEMPO (Timeline Centralizada)
+           ========================================================================== */
+        .timeline-section {
+            padding: 80px 5%;
+            background-color: white; 
+            border-top: 2px solid var(--cor-borda);
+        }
+
+        .timeline-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+            padding: 40px 0;
+        }
+
+        /* A Linha Central desenhada com CSS */
+        .timeline-container::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background-color: var(--cor-dourado);
+        }
+
+        .timeline-item {
+            position: relative;
+            width: 50%;
+            padding: 20px 60px;
+        }
+
+        /* Alternância de Lados (Para ecrãs de computador) */
+        .timeline-item:nth-child(odd) {
+            left: 0;
+            text-align: right;
+        }
+
+        .timeline-item:nth-child(even) {
+            left: 50%;
+            text-align: left;
+        }
+
+        /* A bolinha (Ellipse) da timeline centralizada na linha */
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            top: 35px; /* Alinha com o início do texto do ano */
+            width: 24px;
+            height: 24px;
+            background-color: var(--cor-dourado);
+            border-radius: 50%;
+            box-shadow: 0 0 0 5px white, 0 0 0 8px var(--cor-dourado);
+            z-index: 2;
+        }
+
+        /* Posição da bolinha para os itens da esquerda */
+        .timeline-item:nth-child(odd)::before {
+            right: -12px;
+        }
+
+        /* Posição da bolinha para os itens da direita */
+        .timeline-item:nth-child(even)::before {
+            left: -12px;
+        }
+
+        .timeline-ano {
+            font-family: 'Cormorant', serif;
+            font-size: clamp(3rem, 5vw, 4.5rem);
+            color: var(--cor-destaque-vermelho);
+            font-weight: 700;
+            line-height: 1;
+            margin-bottom: 10px;
+        }
+
+        .timeline-titulo {
+            font-family: 'Gloock', serif;
+            font-size: clamp(1.8rem, 3vw, 2.5rem);
+            color: var(--cor-titulo);
+            margin-bottom: 15px;
+            letter-spacing: 2px;
+        }
+
+        .timeline-texto {
+            font-size: 1.2rem;
+            line-height: 1.6;
+            color: var(--cor-texto-base);
+        }
+
+        /* Alinhamento do texto corrido (Fica mais elegante centralizado com a linha) */
+        .timeline-item:nth-child(odd) .timeline-texto {
+            text-align: right; 
+        }
+        .timeline-item:nth-child(even) .timeline-texto {
+            text-align: left;
+        }
+
+        /* === COMPORTAMENTO EM TELEMÓVEIS (Mobile First) === */
+        @media (max-width: 900px) {
+            .timeline-container::before {
+                left: 30px;
+                transform: none;
+            }
+
+            .timeline-item {
+                width: 100%;
+                padding: 20px 20px 40px 70px;
+            }
+
+            /* Obriga ambos os itens a ficarem à esquerda */
+            .timeline-item:nth-child(odd),
+            .timeline-item:nth-child(even) {
+                left: 0;
+                text-align: left;
+            }
+
+            /* Alinha todas as bolinhas à linha da esquerda */
+            .timeline-item:nth-child(odd)::before,
+            .timeline-item:nth-child(even)::before {
+                left: 18px; /* 30px da linha menos 12px de raio */
+                right: auto;
+            }
+
+            /* Obriga todo o texto a ficar alinhado à esquerda em ecrãs pequenos */
+            .timeline-item:nth-child(odd) .timeline-texto {
+                text-align: left;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- NAVEGAÇÃO SEMÂNTICA -->
+    <header>
+        <nav class="navbar">
+            <div class="logo-container">
+                <img src="https://placehold.co/60x74" alt="Logo HD" style="height: 60px;">
+                <h1 class="logo-texto">Contexto Histórico</h1>
+            </div>
+            
+            <button class="btn-mobile" id="btnMenu" aria-label="Abrir menu">☰</button>
+
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#">Página Inicial</a></li>
+                <li><a href="#">Explorar Registos</a></li>
+                <li><a href="#" class="active">Contexto Histórico</a></li>
+                <li><a href="#">Linha Temporal</a></li>
+                <li><a href="#">Sobre o Projeto</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <!-- SECÇÃO HERO (Introdução) -->
+        <section class="hero-contexto">
+            <h2 class="hero-titulo">Favaios<span>, 1926-1940</span></h2>
+            <p class="hero-descricao">
+                Para compreender os registos de óbitos de Favaios, é preciso conhecer o mundo em que estas pessoas viveram e morreram - uma época de ditadura, pobreza e isolamento, mas também de fé, comunidade e resiliência.
+            </p>
+        </section>
+
+        <!-- SECÇÃO DE CARTÕES TEMÁTICOS -->
+        <section class="temas-section">
+            <div class="grid-temas">
+                
+                <!-- Cartão 1: Favaios da Época -->
+                <article class="card-tema">
+                    <div class="card-header">
+                        <!-- Ícone de Localização (Pin) -->
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="var(--cor-dourado)">
+                            <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+                        </svg>
+                        <h3>Favaios da Época</h3>
+                    </div>
+                    <p>
+                        Favaios, pequena aldeia do concelho de Alijó, no coração do Douro, era - e continua a ser - terra de vinho Moscatel e pão de trigo. Nos anos 1926-1940, a população vivia quase exclusivamente da agricultura e da vinha. As casas de granito acolhiam famílias numerosas, onde a mortalidade infantil era uma realidade quotidiana e as pessoas raramente ultrapassavam os 60 anos de idade.
+                    </p>
+                </article>
+
+                <!-- Cartão 2: O Papel da Igreja -->
+                <article class="card-tema">
+                    <div class="card-header">
+                        <!-- Ícone de Igreja (Silhueta baseada em arquitetura religiosa) -->
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="var(--cor-dourado)">
+                            <path d="M18 12.22V9l-5-2.5V5h2V3h-2V1h-2v2H9v2h2v1.5L6 9v3.22L2 14v8h8v-5h4v5h8v-8l-4-1.78zM12 13c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2z"/>
+                        </svg>
+                        <h3>O Papel da Igreja</h3>
+                    </div>
+                    <p>
+                        Numa época em que o registo civil era incipiente nas zonas rurais, a Igreja Católica desempenhava um papel central na documentação da vida e da morte. O pároco de Favaios registava meticulosamente cada óbito, incluindo nome, filiação, idade, estado civil, profissão, data e local da morte e local de sepultura - dados que nos permitem reconstruir a história destas vidas.
+                    </p>
+                </article>
+
+                <!-- Cartão 3: Ocupações Comuns -->
+                <article class="card-tema">
+                    <div class="card-header">
+                        <!-- Ícone de Pasta Executiva Masculina -->
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="var(--cor-dourado)">
+                            <path d="M20 6h-4V4c0-1.11-.89-2-2-2h-4c-1.11 0-2 .89-2 2v2H4c-1.11 0-1.99.89-1.99 2L2 19c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2zm-6 0h-4V4h4v2z"/>
+                        </svg>
+                        <h3>Ocupações Comuns</h3>
+                    </div>
+                    <p>
+                        Na época, o mais comum era ser proprietário ou proprietária, com uma grande quantidade de mulheres a serem domésticas. Outras profissões mencionadas incluem jornaleiro ou jornaleira, serviçal, pedreiro, carpinteiro, empregado comercial, alfaiate, peixeira, costureira, lavrador, criada e barbeiro.
+                    </p>
+                </article>
+
+            </div>
+        </section>
+
+        <!-- SECÇÃO LINHA DO TEMPO (Linha Histórica) -->
+        <section class="timeline-section">
+            <div class="timeline-container">
+                
+                <article class="timeline-item">
+                    <h4 class="timeline-ano">1926</h4>
+                    <h3 class="timeline-titulo">Golpe Militar, 28 Maio</h3>
+                    <p class="timeline-texto">
+                        O golpe militar põe fim à Primeira República Portuguesa, instaurando a Ditadura Nacional. A instabilidade política agrava as condições de vida nas aldeias do Douro, onde a pobreza e o isolamento já eram profundos.
+                    </p>
+                </article>
+
+                <article class="timeline-item">
+                    <h4 class="timeline-ano">1928</h4>
+                    <h3 class="timeline-titulo">Salazar no Ministério das Finanças</h3>
+                    <p class="timeline-texto">
+                        António de Oliveira Salazar assume o papel de Ministro das Finanças. Exigiu o controlo do orçamento de Estado e foi acumulando pastas ministeriais. Criou, nessa altura, os documentos enquadradores do Estado Novo.
+                    </p>
+                </article>
+
+                <article class="timeline-item">
+                    <h4 class="timeline-ano">1933</h4>
+                    <h3 class="timeline-titulo">Início do Estado Novo</h3>
+                    <p class="timeline-texto">
+                        Após Salazar se tornar Primeiro-Ministro no ano anterior, dá-se o início do Estado Novo, consagrado com uma nova constituição e a criação da PIDE (Polícia Internacional e de Defesa do Estado).
+                    </p>
+                </article>
+
+                <article class="timeline-item">
+                    <h4 class="timeline-ano">1933-1940</h4>
+                    <h3 class="timeline-titulo">Tensões Políticas</h3>
+                    <p class="timeline-texto">
+                        O domínio do Estado Novo sob a cultura aprofunda-se (temos a criação de Mocidade e Legião Portuguesa, bem como a Exposição do Mundo Português, ferramenta nacionalista), com respostas da oposição (há um atentado à bomba contra Salazar).
+                    </p>
+                </article>
+
+            </div>
+        </section>
+    </main>
+
+    <!-- JS PARA O MENU MOBILE -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const btnMenu = document.getElementById('btnMenu');
+            const navLinks = document.getElementById('navLinks');
+
+            if (btnMenu && navLinks) {
+                btnMenu.addEventListener('click', () => {
+                    navLinks.classList.toggle('ativa');
+                });
+            }
+        });
+    </script>
+</body>
+</html>
