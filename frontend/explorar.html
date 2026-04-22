@@ -101,15 +101,43 @@
         <!-- Filters Section -->
         <section class="grid grid-cols-1 md:grid-cols-12 gap-4 md:gap-6 bg-cardBg border-[3px] border-borderLight rounded-xl shadow-[0_4px_13px_rgba(0,0,0,0.05)] p-6">
             
-            <!-- Menu de Interatividade Semântica -->
-            <select id="menu-destaques" class="bg-cardBg border border-borderLight text-textDark text-sm rounded-lg focus:ring-brandRed focus:border-brandRed block p-2 font-esteban outline-none cursor-pointer">
-                <option value="none">Destacar Entidades...</option>
-                <option value="death">Dados de Óbito</option>
-                <option value="persName">Nomes de Pessoas</option>
-                <option value="placeName">Toponímia / Lugares</option>
-                <option value="sacraments">Sacramentos</option>
-                <option value="occupation">Profissões</option>
-            </select>
+            <!-- Filters Button -->
+            <button class="md:col-span-2 bg-brandRed border-2 border-brandRed rounded-lg flex items-center justify-center gap-2 py-4 hover:bg-brandRedDark transition-colors">
+                <i class="ph ph-sliders-horizontal text-white text-3xl"></i>
+                <span class="text-white font-esteban text-2xl tracking-[2px]">Filtros</span>
+            </button>
+
+            <!-- Year Filter -->
+            <div class="md:col-span-3 flex flex-col gap-2">
+                <label class="font-playfair text-textMuted text-xl tracking-[1.5px]">ANO</label>
+                <select class="bg-background border-[3px] border-borderLight rounded-lg p-4 font-esteban text-2xl text-textMuted focus:outline-none focus:border-brandRed cursor-pointer appearance-none">
+                    <option>Todos os anos</option>
+                    <option>1926</option>
+                    <option>1927</option>
+                    <option>1928</option>
+                </select>
+            </div>
+
+            <!-- Gender Filter (Placeholder for future schema update) -->
+            <div class="md:col-span-3 flex flex-col gap-2">
+                <label class="font-playfair text-textMuted text-xl tracking-[1.5px]">SEXO</label>
+                <select class="bg-background border-[3px] border-borderLight rounded-lg p-4 font-esteban text-2xl text-textMuted focus:outline-none focus:border-brandRed cursor-pointer appearance-none">
+                    <option>Todos</option>
+                    <option>Masculino</option>
+                    <option>Feminino</option>
+                </select>
+            </div>
+
+            <!-- Location Filter -->
+            <div class="md:col-span-4 flex flex-col gap-2">
+                <label class="font-playfair text-textMuted text-xl tracking-[1.5px]">LOCALIDADE</label>
+                <select class="bg-background border-[3px] border-borderLight rounded-lg p-4 font-esteban text-2xl text-textMuted focus:outline-none focus:border-brandRed cursor-pointer appearance-none">
+                    <option>Todas</option>
+                    <option>Favaios</option>
+                    <option>Sanfins do Douro</option>
+                    <option>Alijó</option>
+                </select>
+            </div>
         </section>
 
         <!-- Data Table Section -->
