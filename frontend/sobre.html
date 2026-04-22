@@ -19,6 +19,7 @@
         }
 
         :root {
+            --accent-red: #661515;
             --cor-fundo-main: #F8F6F2;
             --cor-fundo-nav: #F4F0EA;
             --cor-borda-nav: #DCD6CD;
@@ -178,6 +179,22 @@
             .nav-links.ativa {
                 display: flex;
             }
+        }
+        /* --- RODAPÉ --- */
+        .main-footer {
+            background: var(--accent-red);
+            color: white;
+            padding: 50px 5%;
+            font-size: 1.2rem;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            letter-spacing: 2px;
         }
     </style>
 </head>
