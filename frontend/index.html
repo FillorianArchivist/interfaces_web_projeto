@@ -1,428 +1,157 @@
 <!DOCTYPE html>
-<html lang="pt-PT">
+<html lang="pt-PT" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Manuscritos de Favaios - Arquivo Paroquial</title>
+    <title>Arquivo Paroquial - Manuscritos de Favaios</title>
     
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant:wght@700&family=Esteban&family=Gloock&family=Playfair+Display:wght@600&display=swap" rel="stylesheet">
+    <!-- Tailwind CSS (Modular Styling Framework) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts imported from your Figma design -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant:wght@700&family=Esteban&family=Gloock&family=Playfair+Display:wght@500;600&display=swap" rel="stylesheet">
+    
+    <!-- Phosphor Icons for the Footer -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
 
-    <style>
-        /* --- 1. RESET E VARIÁVEIS --- */
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-
-        :root {
-            --cor-primaria: #D1A537; 
-            --cor-fundo: #F8F6F2;    
-            --cor-texto: #333333;
-            --cor-escura: #2A0707;   
-            --cor-destaque: #661515; 
-            --cor-clara: #EBE2DB;
-            --cor-borda: #ccc;
-        }
-
-        body {
-            font-family: 'Esteban', serif;
-            background-color: var(--cor-fundo);
-            color: var(--cor-texto);
-            line-height: 1.6;
-            scroll-behavior: smooth;
-        }
-
-        .box-main {
-            max-width: 1200px;
-            margin: 0 auto;
-            width: 100%;
-        }
-
-        /* --- 2. NAVEGAÇÃO --- */
-        .navbar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background-color: var(--cor-escura);
-            color: white;
-            padding: 15px 5%;
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-        }
-
-        .nav-list { list-style: none; display: flex; gap: 20px; }
-        .nav-list a { color: white; text-decoration: none; font-weight: bold; transition: color 0.3s ease; }
-        .nav-list a:hover { color: var(--cor-primaria); }
-
-        /* --- 3. HERO SECTION --- */
-        .hero-section {
-            background: linear-gradient(180deg, rgba(34, 19, 8, 0.9) 0%, rgba(52, 29, 14, 0.7) 60%, rgba(248, 246, 242, 1) 100%), url('https://placehold.co/1920x1080') no-repeat center top/cover;
-            color: var(--cor-clara);
-            text-align: center;
-            min-height: 70vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            padding: 20px 5%;
-        }
-
-        .subtitle-top {
-            color: var(--cor-primaria);
-            font-family: 'Playfair Display', serif;
-            font-size: clamp(1.2rem, 3vw, 2rem);
-            margin-bottom: 20px;
-            text-transform: uppercase;
-        }
-
-        .title-main {
-            font-family: 'Gloock', serif;
-            font-size: clamp(3rem, 8vw, 6rem);
-            line-height: 1.1;
-            margin-bottom: 20px;
-        }
-
-        /* --- 4. ESTATÍSTICAS (OS NÚMEROS) --- */
-        .stats-section {
-            background-color: white;
-            padding: 40px 5%;
-            border-bottom: 2px solid var(--cor-primaria);
-        }
-
-        .stats-grid {
-            display: flex;
-            justify-content: space-around;
-            flex-wrap: wrap;
-            gap: 20px;
-            text-align: center;
-        }
-
-        .stat-item h3 {
-            font-size: 3.5rem;
-            color: var(--cor-destaque);
-            font-family: 'Playfair Display', serif;
-            line-height: 1;
-        }
-
-        .stat-item p {
-            font-size: 1.2rem;
-            color: var(--cor-texto);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-top: 10px;
-        }
-
-        /* --- 5. SECÇÃO ARQUIVO (Tabela e Formulário) --- */
-        .arquivo-section {
-            padding: 60px 5%;
-        }
-
-        .section-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 30px;
-            flex-wrap: wrap;
-            gap: 20px;
-        }
-
-        .section-header h2 {
-            font-family: 'Cormorant', serif;
-            font-size: 2.5rem;
-            color: var(--cor-escura);
-        }
-
-        .btn {
-            background-color: var(--cor-destaque);
-            color: white;
-            border: none;
-            padding: 12px 24px;
-            font-family: 'Esteban', serif;
-            font-size: 1.1rem;
-            cursor: pointer;
-            border-radius: 4px;
-            transition: background 0.3s;
-        }
-
-        .btn:hover { background-color: var(--cor-escura); }
-        .btn-danger { background-color: #a32a2a; padding: 6px 12px; font-size: 0.9rem;}
-        .btn-danger:hover { background-color: #7a1c1c; }
-
-        /* Formulário */
-        .form-container {
-            background-color: white;
-            padding: 30px;
-            border-radius: 8px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-            margin-bottom: 30px;
-            border-top: 4px solid var(--cor-primaria);
-            display: none; /* Escondido por defeito */
-        }
-
-        .form-container.active { display: block; animation: fadeIn 0.4s ease; }
-
-        .form-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-            margin-bottom: 20px;
-        }
-
-        .form-group { display: flex; flex-direction: column; }
-        .form-group label { font-weight: bold; margin-bottom: 5px; color: var(--cor-escura); }
-        .form-group input {
-            padding: 10px;
-            border: 1px solid var(--cor-borda);
-            border-radius: 4px;
-            font-family: 'Esteban', serif;
-        }
-
-        /* Tabela */
-        .table-wrapper {
-            overflow-x: auto;
-            background: white;
-            border-radius: 8px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            text-align: left;
-        }
-
-        th, td { padding: 15px 20px; border-bottom: 1px solid var(--cor-borda); }
-        
-        th {
-            background-color: var(--cor-escura);
-            color: white;
-            font-family: 'Playfair Display', serif;
-            white-space: nowrap;
-        }
-
-        tbody tr:hover { background-color: #f1ebd9; }
-
-        /* --- 6. FOOTER --- */
-        footer {
-            background-color: var(--cor-escura);
-            color: var(--cor-clara);
-            padding: 40px 5%;
-            text-align: center;
-            margin-top: 40px;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(-10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-    </style>
-</head>
-<body>
-
-    <!-- NAVEGAÇÃO -->
-    <nav class="navbar">
-        <div class="logo"><h2>UMinho - Arquivo</h2></div>
-        <ul class="nav-list">
-            <li><a href="#hero">Início</a></li>
-            <li><a href="#arquivo">Explorar Registos</a></li>
-        </ul>
-    </nav>
-
-    <!-- HERO -->
-    <header class="hero-section" id="hero">
-        <h2 class="subtitle-top">Arquivo Paroquial 1926-1940</h2>
-        <h1 class="title-main">Manuscritos<br>de Favaios</h1>
-        <p style="font-size: 1.2rem; max-width: 800px; opacity: 0.9;">
-            Honramos a memória dos que partiram - registos de óbitos da paróquia de Favaios, Alto Douro.
-        </p>
-    </header>
-
-    <!-- ESTATÍSTICAS -->
-    <section class="stats-section">
-        <div class="box-main stats-grid">
-            <div class="stat-item">
-                <h3 id="stat-assentos">0</h3>
-                <p>Registos Totais</p>
-            </div>
-            <div class="stat-item">
-                <h3 id="stat-anos">0</h3>
-                <p>Anos Analisados</p>
-            </div>
-        </div>
-    </section>
-
-    <!-- ÁREA DE DADOS (JAMSTACK CRUD) -->
-    <section class="arquivo-section" id="arquivo">
-        <div class="box-main">
-            
-            <div class="section-header">
-                <h2>Explorar Registos</h2>
-                <button class="btn" id="btnToggleForm">Novo Registo</button>
-            </div>
-
-            <!-- Formulário de Inserção -->
-            <div class="form-container" id="formContainer">
-                <form id="formRegisto">
-                    <div class="form-grid">
-                        <div class="form-group">
-                            <label for="nome">Nome do Falecido</label>
-                            <input type="text" id="nome" required placeholder="Ex: Maria da Conceição">
-                        </div>
-                        <div class="form-group">
-                            <label for="idade">Idade</label>
-                            <input type="number" id="idade" required min="0" placeholder="Ex: 75">
-                        </div>
-                        <div class="form-group">
-                            <label for="freguesia">Freguesia</label>
-                            <input type="text" id="freguesia" required value="Favaios">
-                        </div>
-                        <div class="form-group">
-                            <label for="data">Data de Óbito</label>
-                            <input type="date" id="data" required>
-                        </div>
-                    </div>
-                    <button type="submit" class="btn">Guardar Registo</button>
-                </form>
-            </div>
-
-            <!-- Tabela de Dados -->
-            <div class="table-wrapper">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Nome</th>
-                            <th>Idade</th>
-                            <th>Freguesia</th>
-                            <th>Data de Óbito</th>
-                            <th>Ações</th>
-                        </tr>
-                    </thead>
-                    <tbody id="tabelaBody">
-                        <!-- Os dados serão injetados aqui via JavaScript -->
-                    </tbody>
-                </table>
-            </div>
-
-        </div>
-    </section>
-
-    <!-- FOOTER -->
-    <footer>
-        <p>Universidade do Minho, Campus de Gualtar, 4710-057 Braga</p>
-        <p style="margin-top: 10px; font-size: 0.9rem; opacity: 0.7;">Programação para a Web 2025/2026 - Abordagem Jamstack</p>
-    </footer>
-
-    <!-- SCRIPT JAMSTACK -->
+    <!-- Custom Tailwind Configuration to match your exact Figma Colors and Fonts -->
     <script>
-        // 1. Configuração Inicial e Variáveis
-        const STORAGE_KEY = 'uminho_favaios_data';
-        
-        // Dados de exemplo para a primeira visita
-        const dadosIniciais = [
-            { id: 1, nome: "José Carlos Silva", idade: 68, freguesia: "Favaios", data: "1926-05-14" },
-            { id: 2, nome: "Ana Joaquina", idade: 82, freguesia: "Favaios", data: "1928-11-02" },
-            { id: 3, nome: "Manuel António", idade: 45, freguesia: "Alijó", data: "1935-02-21" }
-        ];
-
-        // Referências do DOM
-        const formContainer = document.getElementById('formContainer');
-        const btnToggleForm = document.getElementById('btnToggleForm');
-        const formRegisto = document.getElementById('formRegisto');
-        const tabelaBody = document.getElementById('tabelaBody');
-
-        // 2. Inicialização da Aplicação
-        document.addEventListener('DOMContentLoaded', () => {
-            // Se não houver dados no LocalStorage, insere os dados iniciais
-            if (!localStorage.getItem(STORAGE_KEY)) {
-                localStorage.setItem(STORAGE_KEY, JSON.stringify(dadosIniciais));
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        background: '#F8F6F2',
+                        gold: '#D1A537',
+                        goldDark: '#BF984B',
+                        lightText: '#EBE2DB',
+                        darkText: '#2D2724',
+                        cardBorder: '#BFB7B1',
+                        brandRed: '#661515',
+                        brandRedDark: '#4a0f0f'
+                    },
+                    fontFamily: {
+                        playfair: ['"Playfair Display"', 'serif'],
+                        gloock: ['"Gloock"', 'serif'],
+                        esteban: ['"Esteban"', 'serif'],
+                        cormorant: ['"Cormorant"', 'serif'],
+                    }
+                }
             }
-            
-            atualizarInterface();
-        });
-
-        // 3. Controlos de UI
-        btnToggleForm.addEventListener('click', () => {
-            formContainer.classList.toggle('active');
-            btnToggleForm.innerText = formContainer.classList.contains('active') ? 'Cancelar' : 'Novo Registo';
-        });
-
-        // 4. Lógica de Inserção (Create)
-        formRegisto.addEventListener('submit', (e) => {
-            e.preventDefault(); // Evita que a página recarregue
-
-            // Recolher valores
-            const novoRegisto = {
-                id: Date.now(), // ID único baseado na timestamp
-                nome: document.getElementById('nome').value,
-                idade: document.getElementById('idade').value,
-                freguesia: document.getElementById('freguesia').value,
-                data: document.getElementById('data').value
-            };
-
-            // Ir buscar os registos atuais, adicionar o novo e guardar
-            const registos = lerDados();
-            registos.push(novoRegisto);
-            guardarDados(registos);
-
-            // Limpar form e atualizar UI
-            formRegisto.reset();
-            formContainer.classList.remove('active');
-            btnToggleForm.innerText = 'Novo Registo';
-            atualizarInterface();
-        });
-
-        // 5. Lógica de Apagar (Delete)
-        function apagarRegisto(id) {
-            if (confirm("Tem a certeza que deseja apagar este registo?")) {
-                let registos = lerDados();
-                // Filtra o array removendo o ID selecionado
-                registos = registos.filter(reg => reg.id !== id);
-                guardarDados(registos);
-                atualizarInterface();
-            }
-        }
-
-        // 6. Funções Auxiliares (Modularidade)
-        function lerDados() {
-            return JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
-        }
-
-        function guardarDados(dados) {
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(dados));
-        }
-
-        function atualizarInterface() {
-            const registos = lerDados();
-            
-            // Renderizar Tabela
-            tabelaBody.innerHTML = ''; // Limpa a tabela antes de desenhar
-            
-            if (registos.length === 0) {
-                tabelaBody.innerHTML = '<tr><td colspan="5" style="text-align:center;">Sem registos no sistema.</td></tr>';
-            } else {
-                // Ordenar por data decrescente
-                registos.sort((a, b) => new Date(b.data) - new Date(a.data));
-                
-                registos.forEach(reg => {
-                    const tr = document.createElement('tr');
-                    tr.innerHTML = `
-                        <td><strong>${reg.nome}</strong></td>
-                        <td>${reg.idade}</td>
-                        <td>${reg.freguesia}</td>
-                        <td>${reg.data}</td>
-                        <td>
-                            <button class="btn btn-danger" onclick="apagarRegisto(${reg.id})">Apagar</button>
-                        </td>
-                    `;
-                    tabelaBody.appendChild(tr);
-                });
-            }
-
-            // Atualizar Estatísticas ("Os Números")
-            document.getElementById('stat-assentos').textContent = registos.length;
-            
-            // Calcular anos únicos
-            const anosUnicos = new Set(registos.map(reg => new Date(reg.data).getFullYear()));
-            document.getElementById('stat-anos').textContent = registos.length > 0 ? anosUnicos.size : 0;
         }
     </script>
+</head>
+<body class="bg-background font-esteban text-darkText antialiased">
+
+    <!-- ==========================================
+         HERO SECTION (Modular Component)
+         ========================================== -->
+    <header class="relative min-h-screen flex flex-col items-center justify-center text-center px-6 py-20 overflow-hidden">
+        <!-- Background Image with Gradient Overlay -->
+        <div class="absolute inset-0 z-0">
+            <!-- Placeholder for Favaios landscape -->
+            <img src="Favaios.png" alt="Paisagem de Favaios" class="w-full h-full object-cover" />
+
+            <!-- Top dark fade for text readability -->
+            <div class="absolute inset-0 bg-gradient-to-b from-black/90 via-black/50 to-black/10"></div>
+            
+            <!-- Dedicated bottom fade to blend seamlessly into the next section -->
+            <div class="absolute inset-x-0 -bottom-2 h-64 bg-gradient-to-t from-background via-background/90 to-transparent"></div>
+        </div>
+
+        <!-- Hero Content -->
+        <div class="relative z-10 flex flex-col items-center max-w-5xl mx-auto mt-16">
+            <h2 class="font-playfair font-semibold text-gold text-xl md:text-3xl tracking-[0.06em] mb-4">
+                ARQUIVO PAROQUIAL 1926-1940
+            </h2>
+            <h1 class="font-gloock text-lightText text-5xl md:text-7xl lg:text-[80px] leading-tight mb-8">
+                Manuscritos<br>de Favaios
+            </h1>
+            <p class="font-esteban text-lightText/80 text-xl md:text-3xl max-w-4xl leading-relaxed mb-16">
+                Honramos a memória dos que partiram - registos de óbitos da paróquia de Favaios, Alto Douro, entre 1926 e 1940.
+            </p>
+
+            <!-- Navigation Grid (Responsive Boxes) -->
+            <nav class="grid grid-cols-1 md:grid-cols-2 gap-6 w-full max-w-4xl">
+                <a href="explorar.html" class="group relative flex items-center justify-center h-[120px] border-2 border-white/80 hover:border-gold hover:bg-white/5 transition-all duration-300">
+                    <span class="font-playfair font-medium text-lightText text-2xl md:text-3xl text-center underline decoration-1 underline-offset-8 group-hover:text-gold transition-colors">EXPLORAR<br>DADOS</span>
+                </a>
+                <a href="#sobre" class="group relative flex items-center justify-center h-[120px] border-2 border-white/80 hover:border-gold hover:bg-white/5 transition-all duration-300">
+                    <span class="font-playfair font-medium text-lightText text-2xl md:text-3xl text-center underline decoration-1 underline-offset-8 group-hover:text-gold transition-colors">LINHA<br>TEMPORAL</span>
+                </a>
+                <a href="#sobre" class="group relative flex items-center justify-center h-[120px] border-2 border-white/80 hover:border-gold hover:bg-white/5 transition-all duration-300">
+                    <span class="font-playfair font-medium text-lightText text-2xl md:text-3xl text-center underline decoration-1 underline-offset-8 group-hover:text-gold transition-colors">CONTEXTO<br>HISTÓRICO</span>
+                </a>
+                <a href="#sobre" class="group relative flex items-center justify-center h-[120px] border-2 border-white/80 hover:border-gold hover:bg-white/5 transition-all duration-300">
+                    <span class="font-playfair font-medium text-lightText text-2xl md:text-3xl text-center underline decoration-1 underline-offset-8 group-hover:text-gold transition-colors">SOBRE O<br>PROJETO</span>
+                </a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- ==========================================
+         STATS SECTION (Modular Component)
+         ========================================== -->
+    <!-- The trick: relative z-20 brings it to the front, -mt-4 pulls it up over the hero section, pt-28 restores inner spacing, and bg-background makes it opaque -->
+    <section class="relative z-20 -mt-4 pt-28 pb-24 px-6 max-w-7xl mx-auto bg-background">
+        <div class="text-center mb-16">
+            <h2 class="font-playfair font-medium text-goldDark text-2xl md:text-4xl tracking-[0.15em] mb-4">OS NÚMEROS</h2>
+            <h3 class="font-gloock text-darkText text-4xl md:text-[50px] leading-tight">Mais de uma década<br>de informação</h3>
+        </div>
+
+        <!-- CSS Grid for the 4 Stat Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <!-- Card 1 -->
+            <div class="bg-background border-2 border-cardBorder rounded-md p-10 flex flex-col items-center justify-center text-center h-[280px] shadow-sm hover:shadow-md transition-shadow">
+                <span class="font-cormorant font-bold text-brandRed text-[80px] md:text-[96px] leading-none mb-4" id="stat-anos">14</span>
+                <span class="font-cormorant font-bold text-[#49454F] text-2xl md:text-3xl leading-snug">Anos<br>registados</span>
+            </div>
+            <!-- Card 2 -->
+            <div class="bg-background border-2 border-cardBorder rounded-md p-10 flex flex-col items-center justify-center text-center h-[280px] shadow-sm hover:shadow-md transition-shadow">
+                <span class="font-cormorant font-bold text-brandRed text-[80px] md:text-[96px] leading-none mb-4" id="stat-assentos">566</span>
+                <span class="font-cormorant font-bold text-[#49454F] text-2xl md:text-3xl leading-snug">Assentos<br>Totais</span>
+            </div>
+            <!-- Card 3 -->
+            <div class="bg-background border-2 border-cardBorder rounded-md p-10 flex flex-col items-center justify-center text-center h-[280px] shadow-sm hover:shadow-md transition-shadow">
+                <span class="font-cormorant font-bold text-brandRed text-[80px] md:text-[96px] leading-none mb-4">200+</span>
+                <span class="font-cormorant font-bold text-[#49454F] text-2xl md:text-3xl leading-snug">Apelidos e<br>Famílias</span>
+            </div>
+            <!-- Card 4 -->
+            <div class="bg-background border-2 border-cardBorder rounded-md p-10 flex flex-col items-center justify-center text-center h-[280px] shadow-sm hover:shadow-md transition-shadow">
+                <span class="font-cormorant font-bold text-brandRed text-[80px] md:text-[96px] leading-none mb-4">4</span>
+                <span class="font-cormorant font-bold text-[#49454F] text-2xl md:text-3xl leading-snug">Localidades<br>diferentes</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==========================================
+         FOOTER (Modular Component)
+         ========================================== -->
+    <footer id="sobre" class="bg-brandRed text-white py-16 px-6 relative">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-start md:items-center gap-10">
+            <!-- Brand / Location -->
+            <div class="flex flex-col gap-6 max-w-lg">
+                <div class="flex items-start gap-4">
+                    <i class="ph ph-map-pin text-4xl text-gold mt-1"></i>
+                    <p class="font-esteban text-xl md:text-2xl tracking-widest leading-relaxed">
+                        Universidade do Minho,<br>Campus de Gualtar,<br>4710-057 Braga
+                    </p>
+                </div>
+            </div>
+
+            <!-- Contact -->
+            <div class="flex flex-col gap-6 max-w-lg">
+                <div class="flex items-start gap-4">
+                    <i class="ph ph-info text-4xl text-gold mt-1"></i>
+                    <p class="font-esteban text-xl md:text-2xl tracking-widest leading-relaxed">
+                        Telefone: +351 253 604 173<br>
+                        E-mail: pedagogico@elach.uminho.pt
+                    </p>
+                </div>
+            </div>
+        </div>
+    </footer>
+    
 </body>
 </html>
