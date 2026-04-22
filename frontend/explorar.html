@@ -16,6 +16,9 @@
     <!-- Phosphor Icons -->
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
 
+    <!-- open seadragon para visualização da imagem -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/openseadragon/4.1.0/openseadragon.min.js"></script>
+    
     <!-- Custom Tailwind Configuration -->
     <script>
         tailwind.config = {
@@ -162,12 +165,12 @@
              ========================================== -->
         <section id="visualizador-documental" class="grid grid-cols-1 lg:grid-cols-2 gap-8 bg-cardBg border-[3px] border-borderLight rounded-xl shadow-[0_4px_13px_rgba(0,0,0,0.05)] p-6 hidden mt-8">
             
-            <!-- Lado Esquerdo: Imagem do Manuscrito -->
+           <!-- Lado Esquerdo: Imagem do Manuscrito -->
             <div class="flex flex-col gap-4 border-r-0 lg:border-r-[3px] border-borderLight pr-0 lg:pr-6">
                 <h3 class="font-playfair text-2xl text-textDark tracking-[1px] border-b-2 border-borderLight pb-2">Manuscrito Original</h3>
-                <div class="bg-background w-full h-[600px] border-2 border-borderLight rounded-lg overflow-hidden relative">
-                    <!-- O caminho aponta para a imagem Favaios.png que está na sua pasta public -->
-                    <img src="public/Favaios.png" alt="Registo Paroquial de Favaios" class="w-full h-full object-cover cursor-zoom-in hover:scale-105 transition-transform duration-300">
+    
+           <!-- Contentor do OpenSeadragon -->
+                <div id="visualizador-osd" class="bg-background w-full h-[600px] border-2 border-borderLight rounded-lg overflow-hidden relative">
                 </div>
             </div>
 
@@ -190,7 +193,10 @@
     <script>
         // Array global que armazena os metadados extraídos dos ficheiros XML
         let allRecords = []; 
-
+        
+        // Variável global para guardar a instância do visualizador
+        let visualizadorImagem;
+        
         // Lista dos ficheiros XML alojados no repositório (public e public/data)
         const ficheirosXML = [
             'public/template-assento.xml',
@@ -268,6 +274,22 @@
             }
         }
 
+        // 3. FUNÇÃO DO OPENSEADRAGON
+        function inicializarVisualizadorImagem() {
+            visualizadorImagem = OpenSeadragon({
+                id: "visualizador-osd", // A div que criámos no "Palco"
+                prefixUrl: "https://cdnjs.cloudflare.com/ajax/libs/openseadragon/4.1.0/images/",
+                tileSources: {
+                    type: 'image',
+                    url: 'public/Favaios.png' // Caminho provisório para a sua imagem atual [1]
+                },
+                showNavigator: true,
+                navigatorPosition: "BOTTOM_RIGHT",
+                zoomInButton: true,
+                zoomOutButton: true
+            });
+        }
+        
          // 2. Render Table Rows
         function renderTable(recordsToRender) {
             const tbody = document.getElementById('records-table-body');
