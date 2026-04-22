@@ -52,57 +52,22 @@
             z-index: 100;
         }
 
+        /* --- NAVEGAÇÃO --- */
         .navbar {
-            max-width: 1800px;
-            margin: 0 auto;
-            padding: 15px 5%;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            flex-wrap: wrap; /* Permite que o menu desça em ecrãs pequenos */
-            gap: 20px;
+            padding: 1.0rem 5%;
+            background: var(--nav-bg);
+            border-bottom: 1px solid var(--border-color);
         }
 
-        .logo-container {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-        }
+        .nav-logo-area { display: flex; align-items: center; gap: 10px; }
+        .nav-logo-area img { width: 30px; height: auto; }
+        .nav-title { font-family: 'Gloock', serif; font-size: 1rem; }
 
-        .logo-img {
-            width: 60px;
-            height: 72px;
-            object-fit: contain;
-        }
-
-        .logo-texto {
-            font-family: 'Gloock', serif;
-            font-size: clamp(1.5rem, 3vw, 2.5rem); /* Tamanho responsivo */
-            color: var(--cor-texto-ativo);
-            letter-spacing: 2px;
-        }
-
-        .nav-links {
-            display: flex;
-            list-style: none;
-            gap: 30px;
-            flex-wrap: wrap;
-            justify-content: center;
-        }
-
-        .nav-links a {
-            text-decoration: none;
-            color: var(--cor-texto-nav);
-            font-family: 'Gloock', serif;
-            font-size: 1.2rem;
-            letter-spacing: 1px;
-            transition: color 0.3s ease;
-        }
-
-        .nav-links a:hover, 
-        .nav-links a.active {
-            color: var(--cor-texto-ativo);
-        }
+        .nav-links { display: flex; list-style: none; gap: 25px; margin: 0; }
+        .nav-links a { text-decoration: none; color: #7D736D; font-family: 'Gloock', serif; font-size: 1.0rem; }
 
         /* ==========================================================================
            3. CONTEÚDO PRINCIPAL (Layout Grid)
