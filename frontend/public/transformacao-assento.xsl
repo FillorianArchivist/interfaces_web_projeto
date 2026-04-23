@@ -52,26 +52,19 @@
     </xsl:template>
 
     <!-- 6. Tratamento de entidades nomeadas e termos anotados para interatividade -->
-    <!-- Agrupamos elementos que partilham a mesma lógica de criar um 'span' interativo -->
+    <!-- Template para as várias entidades -->
     <xsl:template match="death | placeName | sacraments | state | occupation | age | birthPlace | residence | relation | funeral">
-        
-        <!-- O XSLT cria uma tag <span> e injeta o nome do elemento XML como classe CSS -->
-        <span class="termo-anotado {local-name()}" 
+        <span class="termo-anotado {local-name()} transition-colors duration-300 rounded" 
               title="Categoria: {local-name()}">
-            
-            <!-- Injeta os atributos originais do XML como data-attributes para o JavaScript ler depois -->
             <xsl:if test="@when"><xsl:attribute name="data-data-cronologica"><xsl:value-of select="@when"/></xsl:attribute></xsl:if>
             <xsl:if test="@type"><xsl:attribute name="data-tipo"><xsl:value-of select="@type"/></xsl:attribute></xsl:if>
-            <xsl:if test="@value"><xsl:attribute name="data-valor"><xsl:value-of select="@value"/></xsl:attribute></xsl:if>
-            <xsl:if test="@unit"><xsl:attribute name="data-unidade"><xsl:value-of select="@unit"/></xsl:attribute></xsl:if>
-
             <xsl:apply-templates/>
         </span>
     </xsl:template>
 
-    <!-- 7. Tratamento específico para as Pessoas (persName) -->
+    <!-- Template para Nomes de Pessoas -->
     <xsl:template match="persName">
-        <span class="termo-anotado persName" data-id="{@id}" data-funcao="{@type | @role | ../@type}">
+        <span class="termo-anotado persName transition-colors duration-300 rounded" data-id="{@id}" data-funcao="{@type | @role | ../@type}">
             <xsl:apply-templates/>
         </span>
     </xsl:template>
