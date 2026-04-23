@@ -335,76 +335,118 @@
             }
         }
         
-         // 2. Render Table Rows
+         // ==========================================
+        // 1. O MOTOR DA TABELA (CLIQUE DINÂMICO)
+        // ==========================================
         function renderTable(recordsToRender) {
             const tbody = document.getElementById('records-table-body');
-            const noResults = document.getElementById('no-results');
-            
-            tbody.innerHTML = '';
+            if (!tbody) return;
+
+            tbody.innerHTML = ""; // Limpa mockups estáticos
 
             if (recordsToRender.length === 0) {
-                noResults.classList.remove('hidden');
-            } else {
-                noResults.classList.add('hidden');
-
-                recordsToRender.forEach((record, index) => {
-                    const tr = document.createElement('tr');
-                    
-                    // 1ª ALTERAÇÃO: Adicionamos classes base para feedback visual de clique
-                    let baseClasses = "hover:bg-headerBg cursor-pointer transition-colors duration-200 ";
-                    
-                    // Mantém a lógica do Figma de separar por caixas (borders)
-                    if (index !== recordsToRender.length - 1) {
-                        tr.className = baseClasses + "border-b-[3px] border-borderLight bg-cardBg";
-                    } else {
-                        tr.className = baseClasses + "bg-cardBg";
-                    }
-                    
-                    // 2ª ALTERAÇÃO: Formatação de datas mais segura a partir dos dados do XML
-                    let formattedDate = "N/D";
-                    if (record.data) {
-                        const dObj = new Date(record.data);
-                        if (!isNaN(dObj)) formattedDate = dObj.toLocaleDateString('pt-PT');
-                    }
-
-                    let sepulturaDate = "N/A";
-                    if (record.sepultura) {
-                        const sObj = new Date(record.sepultura);
-                        if (!isNaN(sObj)) sepulturaDate = sObj.toLocaleDateString('pt-PT');
-                    }
-
-                    tr.innerHTML = `
-                        <td class="p-4 tracking-[1.5px]">${record.nome}</td>
-                        <td class="p-4 text-center tracking-[1.5px]">${record.idade} anos</td>
-                        <td class="p-4 text-center tracking-[1.5px]">${formattedDate}</td>
-                        <td class="p-4 text-center tracking-[1.5px] text-textMuted">${sepulturaDate}</td>
-                    `;
-                    
-                    // 3ª ALTERAÇÃO (A MAIS IMPORTANTE): O evento que aciona o XSLT ao clicar na linha
-                    tr.addEventListener('click', () => {
-                        // Passamos o caminho do XML específico para a função que fará o processamento
-                        carregarRegistoDiplomatico(record.ficheiroOrigem);
-                    });
-
-                    // Injeta a linha construída e interativa na tabela
-                    tbody.appendChild(tr);
-                });
+                tbody.innerHTML = `<tr><td colspan="4" class="p-6 text-center text-textDark/50">Nenhum registo encontrado.</td></tr>`;
+                return;
             }
-        }
 
-        // 3. Simple Search Logic (Live Filtering)
-        function setupSearch() {
-            const searchInput = document.getElementById('search-input');
-            
-            searchInput.addEventListener('input', (e) => {
-                const term = e.target.value.toLowerCase();
-                const filtered = allRecords.filter(record => {
-                    return record.nome.toLowerCase().includes(term) || 
-                           record.data.includes(term);
-                });
-                renderTable(filtered);
+            recordsToRender.forEach(record => {
+                const tr = document.createElement('tr');
+                tr.className = "border-b border-borderLight hover:bg-borderLight/30 cursor-pointer transition-colors";
+                
+                // RESTAURAÇÃO DO CLIQUE: Passa o ficheiroOrigem real lido do XML
+                tr.onclick = () => {
+                    carregarRegistoDiplomatico(record.ficheiroOrigem);
+                    
+                    // Reseta o visualizador de imagem para o estado inicial
+                    if (typeof escalaZoom !== 'undefined') {
+                        escalaZoom = 1; pontoX = 0; pontoY = 0;
+                        const imagem = document.getElementById('manuscrito-imagem');
+                        if (imagem) aplicarTransformacao(imagem);
+                    }
+                };
+
+                tr.innerHTML = `
+                    <td class="p-4 font-esteban text-textDark">${record.data || 'S/D'}</td>
+                    <td class="p-4 font-playfair font-bold text-brandRed tracking-wide">${record.nome}</td>
+                    <td class="p-4 font-esteban text-textDark">${record.idade || '-'}</td>
+                    <td class="p-4 font-esteban text-textDark">${record.sepultura || '-'}</td>
+                `;
+                tbody.appendChild(tr);
             });
         }
+
+        // ==========================================
+        // 2. O MOTOR DE PESQUISA (FILTRO REAL)
+        // ==========================================
+        function setupSearch() {
+            const barraPesquisa = document.getElementById('search-input');
+            if (!barraPesquisa) return;
+
+            barraPesquisa.addEventListener('input', (evento) => {
+                const termoPesquisado = evento.target.value.toLowerCase().trim();
+
+                if (termoPesquisado === "") {
+                    renderTable(allRecords); // Mostra tudo se a barra estiver vazia
+                    return;
+                }
+
+                // Filtra os dados reais extraídos dos XMLs
+                const resultadosFiltrados = allRecords.filter(record => {
+                    const nomeStr = (record.nome || "").toLowerCase();
+                    const dataStr = (record.data || "").toLowerCase();
+                    const idadeStr = (record.idade || "").toLowerCase();
+                    
+                    return nomeStr.includes(termoPesquisado) || 
+                           dataStr.includes(termoPesquisado) || 
+                           idadeStr.includes(termoPesquisado);
+                });
+
+                renderTable(resultadosFiltrados);
+            });
+        }
+
+        // ==========================================
+        // 3. INTERATIVIDADE TEXTUAL (DESTAQUE SEMÂNTICO)
+        // ==========================================
+        function configurarInteratividadeTextual() {
+            const menuDestaques = document.getElementById('menu-destaques');
+            if (!menuDestaques) return;
+
+            menuDestaques.addEventListener('change', function(evento) {
+                const classeAlvo = evento.target.value; 
+                
+                // Limpa todos os destaques prévios
+                const todasSpans = document.querySelectorAll('.termo-anotado');
+                todasSpans.forEach(span => {
+                    span.classList.remove('bg-yellow-200', 'bg-blue-200', 'bg-green-200', 'bg-red-200', 'bg-purple-200');
+                });
+
+                if (classeAlvo === "none") return;
+
+                // Aplica nova cor apenas à entidade selecionada
+                const elementosParaDestacar = document.querySelectorAll('.' + classeAlvo);
+                elementosParaDestacar.forEach(elemento => {
+                    switch(classeAlvo) {
+                        case 'death': elemento.classList.add('bg-yellow-200'); break;
+                        case 'persName': elemento.classList.add('bg-blue-200'); break;
+                        case 'placeName': elemento.classList.add('bg-green-200'); break;
+                        case 'sacraments': elemento.classList.add('bg-purple-200'); break;
+                        default: elemento.classList.add('bg-red-200'); 
+                    }
+                });
+            });
+        }
+
+        // ==========================================
+        // 4. ARRANQUE DA APLICAÇÃO
+        // ==========================================
+        document.addEventListener('DOMContentLoaded', () => {
+            if (typeof ativarZoomManual === 'function') ativarZoomManual();
+            configurarInteratividadeTextual();
+        });
+
+        // O seu initPage (que invoca renderTable e setupSearch após ler o XML)
+        window.onload = initPage;
         
         // Variáveis de controlo espacial
         let escalaZoom = 1;
