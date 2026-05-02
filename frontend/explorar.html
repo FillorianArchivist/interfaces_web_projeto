@@ -5,88 +5,113 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Explorar Registos - Arquivo Paroquial</title>
     
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cormorant:wght@700&family=Esteban&family=Gloock&family=Playfair+Display:wght@500;600&display=swap" rel="stylesheet">
-    
-    <!-- Custom Tailwind Configuration -->
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        background: '#F8F6F2',
-                        headerBg: '#F4F0EA',
-                        cardBg: '#F2EEE9',
-                        tableBg: '#EDE8E1',
-                        borderLight: '#DCD6CD',
-                        textDark: '#383838',
-                        textMuted: '#7D736D',
-                        brandRed: '#661515',
-                        brandRedDark: '#4a0f0f'
-                    },
-                    fontFamily: {
-                        playfair: ['"Playfair Display"', 'serif'],
-                        gloock: ['"Gloock"', 'serif'],
-                        esteban: ['"Esteban"', 'serif'],
-                        cormorant: ['"Cormorant"', 'serif'],
-                    }
-                }
-            }
-        }
-    </script>
 
     <style>
-:root {
-    --accent-red: #661515; /* A cor vinho que temos usado */
-    --nav-bg: #F4F0EA;      
-    --border-color: #DCD6CD;
-}
+        :root {
+            /* Cores de Fundo */
+            --color-bg-main: #F8F6F2;
+            --color-bg-nav: #F4F0EA;
+            --color-bg-card: #F2EEE9;
+            --color-bg-table: #EDE8E1;
+
+            /* Cores de Borda e Texto */
+            --color-border: #DCD6CD;
+            --color-text-main: #383838;
+            --color-text-muted: #7D736D;
+
+            /* Cores da Marca */
+            --color-brand-red: #661515;
+            --color-brand-red-dark: #4a0f0f;
+
+            /* Tipografia */
+            --font-playfair: 'Playfair Display', serif;
+            --font-gloock: 'Gloock', serif;
+            --font-esteban: 'Esteban', serif;
+            --font-cormorant: 'Cormorant', serif;
+
+            /* Espaçamentos e Layout */
+            --container-max-width: 1200px;
+            --spacing-padding-x: 5%;
+        }
+
+            /* 2. RESET BÁSICO (Substituindo o preflight do Tailwind) */
+        *, *::before, *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         /* --- NAVEGAÇÃO --- */
-.navbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0.8rem 5%;
-    background: var(--nav-bg);
-    border-bottom: 1px solid var(--border-color);
-    min-height: 40px;
-}
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.8rem var(--spacing-padding-x);
+            background-color: var(--color-bg-nav);
+            border-bottom: 1px solid var(--color-border);
+            min-height: 40px;
+        }
 
-.nav-logo-area { display: flex; align-items: center; gap: 10px; }
-.nav-logo-area img { width: 40px; height: auto; } /* Aumentado para 40px como sugerido */
-.nav-title { font-family: 'Gloock', serif; font-size: 1.2rem !important; color: var(--accent-red); }
+        .nav-logo-area { 
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            width: 40px; 
+            height: auto;
+            object-fit: contain; 
+        } 
 
-.nav-links { display: flex; list-style: none; gap: 25px; margin: 0; }
-.nav-links a { 
-    text-decoration: none; 
-    color: #7D736D; 
-    font-family: 'Gloock', serif; 
-    font-size: 0.95rem !important;
-    font-weight: 500;
-    line-height: 1;
-    transition: color 0.3s ease;
-    display: inline-block;
-}
+        .nav-title { 
+            font-family: var(--font-gloock);
+            font-size: 1.2rem;
+            color: var(--color-brand-red);
+            font-weight: normal; 
+        }
+
+        .nav-links { 
+            display: flex; 
+            list-style: none; 
+            gap: 25px; 
+            margin: 0; 
+        }
+
+        .nav-links a { 
+            text-decoration: none; 
+            color: var(--color-text-muted); 
+            font-family: var(--font-gloock); 
+            font-size: 0.95rem;
+            font-weight: 500;
+            line-height: 1;
+            transition: color 0.3s ease;
+            display: inline-block;
+        }
+        
         /* --- RODAPÉ --- */
         .main-footer {
-            background: var(--accent-red);
+            background: var(--color-brand-red);
             color: white;
-            padding: 20px 5%;
+            padding: 40px var(--spacing-padding-x);
             font-size: 0.9rem;
         }
 
         .footer-content {
-            max-width: 1200px;
+            max-width: var(--container-max-width);
             margin: 0 auto;
             display: row;
             flex-direction: column;
             gap: 20px;
             letter-spacing: 1px;
+            text-align: center;
+        }
+
+         .footer__text {
+            font-family: var(--font-esteban);
+            opacity: 0.9;
         }     
     </style>
 </head>
